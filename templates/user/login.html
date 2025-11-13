@@ -1,0 +1,106 @@
+{% extends "user/base.html" %}
+{% load static %}
+
+{% block content %}
+{% include 'user/nav.html' %}
+<hr style="border :2px solid  #174376;">
+
+<!-- Centered responsive login section -->
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card shadow-lg " 
+       style="max-width: 420px; width: 100%; background: transparent; border-width: 2px; border-radius: 12px;">
+    <div class="card-body p-4">
+
+      <!-- Logo -->
+      <div class="text-center mb-3">
+        <img src="{% static 'images/Ando-Tanzania-Blue-Logo_00-1 (2).svg' %}" 
+             alt="Logo" style="width: 80px; height: auto;">
+      </div>
+
+      <h4 class="card-title text-center mb-4 font-weight-bold">Login to Your Account</h4>
+
+      <!-- Alerts -->
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center mt-2" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <!-- Login form -->
+      <form method="post" action="" id="loginForm">
+        {% csrf_token %}
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="username" class="font-weight-bold">Email</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-transparent border-right-0">
+                <i class="fa fa-envelope text-primary"></i>
+              </span>
+            </div>
+            <input type="email" name="username" id="username" 
+                   class="form-control border-left-0" placeholder="Enter your email" required>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password" class="font-weight-bold">Password</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-transparent border-right-0">
+                <i class="fa fa-lock text-primary"></i>
+              </span>
+            </div>
+            <input type="password" name="password" id="password" 
+                   class="form-control border-left-0" placeholder="Enter your password" required>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-primary btn-block" id="loginButton">
+            <i class="fa fa-sign-in mr-2"></i>
+            <span id="btnText">Login</span>
+            <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <!-- Register Link -->
+        <div class="text-center mt-3">
+          Don’t have an account?
+          <a href="{% url 'register' %}" class="text-primary font-weight-bold">Create an Account</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Auto-close alerts -->
+<script>
+  setTimeout(function() {
+    $('.alert').alert('close');
+  }, 3000);
+</script>
+
+<!-- Loading animation -->
+<script>
+  const form = document.getElementById('loginForm');
+  const button = document.getElementById('loginButton');
+  const btnText = document.getElementById('btnText');
+  const spinner = document.getElementById('loadingSpinner');
+
+  form.addEventListener('submit', function() {
+    btnText.textContent = 'Logging in...';
+    spinner.classList.remove('d-none');
+    button.disabled = true;
+  });
+</script>
+
+{% endblock %}

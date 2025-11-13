@@ -1,0 +1,164 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'user/nav.html' %}
+<hr style="border :2px solid  #174376;">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card mb-4 shadow-sm">
+                <div class="row no-gutters">
+                    {% if blog.blog_image %}
+                        <div class="col-md-6">
+                            <img src="{{ blog.blog_image.url }}" class="img-fluid h-100" style="object-fit: cover;" alt="{{ blog.title }}" data-aos="fade-up" data-aos-duration="1500">
+                        </div>
+                    {% endif %}
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h2 class="card-title mb-3" data-aos="fade-up" data-aos-duration="1500">{{ blog.title }}</h2>
+                            <p class="text-muted small mb-4" data-aos="fade-up" data-aos-duration="1500">
+                                Posted By {{ blog.author.first_name }} {{ blog.author.last_name }} | {{ blog.created_at|date:"M d, Y" }}
+                            </p>
+                            <div class="card-text" data-aos="fade-right" data-aos-duration="1500">
+                                {{ blog.content|linebreaks }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'blog_list' %}" class="btn btn-secondary mt-3">Back to All Blogs</a>
+
+            <div class="mt-5">
+                <h4>Comments ({{ comments.paginator.count }})</h4>
+                <hr>
+
+                {% for comment in comments %}
+                    <div class="media mb-3">
+                        <div class="mr-3 rounded-circle text-white d-flex align-items-center justify-content-center" 
+                             style="background-color:  #174376; width:50px; height:50px; font-weight:bold; font-size:18px;">
+                            {{ comment.user.first_name|slice:":1" }}{{ comment.user.last_name|slice:":1" }}
+                        </div>
+                        <div class="media-body">
+                            <h6 class="mt-0">{{ comment.user.first_name }} {{ comment.user.last_name }} 
+                                <small class="text-muted">{{ comment.created_at|date:"M d, Y H:i" }}</small>
+                            </h6>
+                            <p>{{ comment.content|linebreaks }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No comments yet. Be the first to comment!</p>
+                {% endfor %}
+
+                <!-- Bootstrap 4 Pagination -->
+                {% if comments.has_other_pages %}
+                <nav aria-label="Comments Pagination">
+                    <ul class="pagination justify-content-center">
+                        {% if comments.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ comments.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo;</span>
+                            </li>
+                        {% endif %}
+
+                        {% for num in comments.paginator.page_range %}
+                            {% if comments.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% elif num > comments.number|add:'-3' and num < comments.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if comments.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ comments.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&raquo;</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+
+                <h5 class="mt-4">Add a Comment</h5>
+                <form method="post" class="mb-3">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Modern, elegant typography setup */
+    body {
+        font-family: "Poppins", "Inter", "Roboto", sans-serif;
+        color: #222;
+        line-height: 1.7;
+    }
+
+    h2, h5, h6 {
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        color: #174376;
+        letter-spacing: 0.5px;
+    }
+
+    p, li, .list-group-item {
+        font-size: 1rem;
+        color: #444;
+        letter-spacing: 0.3px;
+    }
+
+    .text-muted {
+        color: #6c757d !important;
+        font-style: italic;
+    }
+
+    strong {
+        color: #222;
+    }
+
+    /* Make product titles stand out */
+    .card-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #174376;
+        text-transform: capitalize;
+    }
+
+    /* Add a soft highlight for section titles */
+    h5.mt-4 {
+        border-left: 4px solid #ff9900;
+        padding-left: 10px;
+        font-weight: 600;
+        color: #333;
+    }
+/* Make the blog image taller on small screens */
+@media (max-width: 767.98px) {
+    .card .row.no-gutters img {
+        width: 100% !important;
+        height: 500px !important; /* force the taller height */
+        object-fit: cover !important;
+        display: block;
+    }
+}
+</style>
+
+{% endblock %}

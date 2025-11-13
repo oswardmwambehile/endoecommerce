@@ -1,0 +1,167 @@
+{% extends "user/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+{% include 'user/nav.html' %}
+<hr style="border :2px solid  #174376;">
+
+<div class="container mt-5">
+    <!-- Shopping Cart Title -->
+<h2 style="
+    font-family: 'Arial', 'Helvetica', sans-serif; 
+    font-weight: 700; 
+    font-size: 2rem; 
+    color: #111; 
+    margin-bottom: 0.5rem; 
+    line-height: 1.2;
+    text-transform: none;
+">
+    🛒 {{ request.user.first_name }} {{ request.user.last_name }}'s Shopping Cart
+</h2>
+<p style="
+    font-family: 'Arial', 'Helvetica', sans-serif; 
+    font-size: 1rem; 
+    color: #555; 
+    margin-bottom: 1.5rem;
+">
+    Review the items you’ve added to your cart. You can adjust quantities or remove items before proceeding to checkout.
+</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if cart_items %}
+    <div class="table-responsive">
+        <table class="table table-hover" style="min-width: 900px; border-collapse: collapse; border: 1px solid #dee2e6;">
+            <thead>
+                <tr>
+                    <th style="border-right:1px solid #dee2e6; white-space: nowrap;">Product</th>
+                    <th style="border-right:1px solid #dee2e6; white-space: nowrap;">Image</th>
+                    <th style="border-right:1px solid #dee2e6; white-space: nowrap;">Price (TZS)</th>
+                    <th style="border-right:1px solid #dee2e6; white-space: nowrap;">Quantity</th>
+                    <th style="border-right:1px solid #dee2e6; white-space: nowrap;">Total Cost (TZS)</th>
+                    <th style="white-space: nowrap;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td style="border-right:1px solid #dee2e6; white-space: nowrap;">{{ item.product.name }}</td>
+                    <td style="border-right:1px solid #dee2e6; white-space: nowrap;">
+                        <img src="{{ item.product.product_image.url }}" alt="{{ item.product.name }}" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                    </td>
+                    <td style="border-right:1px solid #dee2e6; white-space: nowrap;">{{ item.product.selling_price|intcomma }}</td>
+                    <td style="border-right:1px solid #dee2e6; white-space: nowrap;">
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-primary mr-2 decrement-btn" data-id="{{ item.id }}">-</button>
+                            <span id="quantity-{{ item.id }}">{{ item.quantity }}</span>
+                            <button class="btn btn-sm btn-primary ml-2 increment-btn" data-id="{{ item.id }}">+</button>
+                        </div>
+                    </td>
+                    <td style="border-right:1px solid #dee2e6; white-space: nowrap;">
+                        <span id="total-cost-{{ item.id }}" class="cart-item-total">{{ item.total_cost|intcomma }}</span>
+                    </td>
+                    <td style="white-space: nowrap;">
+                        <a href="{% url 'remove_from_cart' item.id %}" class="text-danger">
+                            <i class="bi bi-trash-fill"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">Your cart is empty.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Total Price Display -->
+    <div class="d-flex justify-content-end mt-3">
+        <h4>Total Cost : <span id="total-cart-price">{{ total_cart_price|intcomma }}</span> TZS</h4>
+    </div>
+
+    <!-- Checkout Button -->
+    <div class="d-flex justify-content-end mt-2">
+        <a href="{% url 'checkout' %}" class="btn btn-success" style="background-color: #174376; border-color: #174376;">Proceed to Checkout</a>
+    </div>
+
+    {% else %}
+    <div class="alert alert-info text-center">Your cart is empty. Add items to your cart to proceed.</div>
+    {% endif %}
+</div>
+
+<script>
+  // Auto-close alerts
+  setTimeout(function() {
+    $('.alert').alert('close');
+  }, 6000);
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Increment
+    document.querySelectorAll('.increment-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const cartItemId = button.getAttribute('data-id');
+            fetch("{% url 'increment_quantity' 0 %}".replace('0', cartItemId), {
+                method: 'GET',
+                headers: {'X-Requested-With': 'XMLHttpRequest'}
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success){
+                    document.getElementById(`quantity-${cartItemId}`).textContent = data.quantity;
+                    document.getElementById(`total-cost-${cartItemId}`).textContent = data.total_cost.toLocaleString();
+                    updateTotalCartPrice();
+                    updateNavCartQuantity(data.total_quantity);
+                } else alert(data.message);
+            });
+        });
+    });
+
+    // Decrement
+    document.querySelectorAll('.decrement-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const cartItemId = button.getAttribute('data-id');
+            fetch("{% url 'decrement_quantity' 0 %}".replace('0', cartItemId), {
+                method: 'GET',
+                headers: {'X-Requested-With': 'XMLHttpRequest'}
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success){
+                    document.getElementById(`quantity-${cartItemId}`).textContent = data.quantity;
+                    document.getElementById(`total-cost-${cartItemId}`).textContent = data.total_cost.toLocaleString();
+                    updateTotalCartPrice();
+                    updateNavCartQuantity(data.total_quantity);
+                } else alert(data.message);
+            });
+        });
+    });
+
+    function updateTotalCartPrice() {
+        let totalCartPrice = 0;
+        document.querySelectorAll('.cart-item-total').forEach(item => {
+            totalCartPrice += parseFloat(item.textContent.replace(/,/g,''));
+        });
+        document.getElementById('total-cart-price').textContent = totalCartPrice.toLocaleString();
+    }
+
+    function updateNavCartQuantity(totalQuantity) {
+        const navCartQuantityElement = document.getElementById('cart-quantity');
+        if(navCartQuantityElement) navCartQuantityElement.textContent = totalQuantity;
+    }
+});
+</script>
+
+{% endblock %}

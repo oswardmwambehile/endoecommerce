@@ -1,0 +1,168 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+{% include 'user/nav.html' %}
+
+<!-- Inner Page Section -->
+<section class="inner_page_head" style="background-color: #174376;">
+   <div class="container_fuild">
+      <div class="row">
+         <div class="col-md-12">
+            <div class="full text-center">
+               {% if category_name %}
+                   <h3>Products in "{{ category_name }}"</h3>
+                   <p>Explore high-quality products in the {{ category_name }} category.</p>
+               {% else %}
+                   <h3>Discover Our Amazing Products</h3>
+                   <p>Quality products designed to meet your needs. Browse, shop, and enjoy!</p>
+               {% endif %}
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+<!-- End Inner Page Section -->
+
+<!-- Product Section -->
+<section class="product_section layout_padding">
+   <div class="container">
+      <div class="row">
+         {% for product in products %}
+         <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="box shadow-sm rounded">
+               <div class="img-box text-center p-2">
+                  <img src="{{ product.product_image.url }}" alt="{{ product.name }}" class="img-fluid rounded">
+               </div>
+               <div class="detail-box text-center p-2">
+                  <h5>Name : {{ product.name|title }}</h5>
+                  <h6>Price : {{ product.selling_price|intcomma }} TZS</h6>
+               </div>
+               <div class="option_container text-center">
+                  <div class="options mt-2">
+                     <a href="{% url 'show_cart' %}" class="btn btn-primary btn-sm" style="background-color: #174376; border-color: #174376;">
+                        Shop Now
+                     </a>
+                     <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-secondary btn-sm">
+                        View Details
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+         {% empty %}
+         <div class="col-12 text-center py-5">
+            <p>Sorry, we currently have no products to show. Please check back soon!</p>
+         </div>
+         {% endfor %}
+      </div>
+
+      
+   </div>
+</section>
+<style>
+    /* Ensure product details display in block and centered properly */
+    .detail-box h5,
+    .detail-box h6 {
+        display: block;             /* stack name and price vertically */
+        text-align: center;         /* center align the text */
+        margin: 5px 0;              /* spacing between them */
+        white-space: normal;        /* allow wrapping (avoid shrink) */
+        overflow: visible;          /* ensure full visibility */
+        text-overflow: unset;       /* remove ellipsis if any */
+        word-wrap: break-word;      /* break long names safely */
+    }
+
+    /* Make sure the product card keeps nice spacing */
+    .detail-box {
+        display: flex;
+        flex-direction: column;     /* vertical stacking inside */
+        align-items: center;        /* center horizontally */
+        justify-content: center;
+        padding: 10px;
+    }
+
+    /* Optional: style adjustments for name and price */
+    .detail-box h5 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #174376;
+    }
+
+    .detail-box h6 {
+        font-size: 0.95rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .inner_page_head h3 {
+    font-family: 'Montserrat', sans-serif; /* modern sans-serif */
+    font-weight: 700;
+    font-size: 2rem; /* larger, more prominent */
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+/* Paragraph under heading */
+.inner_page_head p {
+    font-family: 'Roboto', sans-serif; /* clean and readable */
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: #f0f0f0;
+    line-height: 1.8;
+}
+
+/* Feature paragraph style */
+.product_section p {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: #2c2c2c;
+    line-height: 1.8;
+    background: #f9fafc;
+    border-left: 5px solid #174376;
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product_section p:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+/* Product card titles and prices */
+.detail-box h5 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #174376;
+    letter-spacing: 0.5px;
+}
+.detail-box h6 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Buttons hover effect */
+.btn-primary {
+    transition: all 0.3s ease;
+}
+.btn-primary:hover {
+    background-color: #0f305d;
+    transform: translateY(-2px);
+}
+
+/* Reset marquee font */
+marquee span {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,197 @@
+{% extends "user/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+{% include 'user/nav.html' %}
+<hr style="border :2px solid  #174376;">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card mb-4 shadow-sm">
+                <div class="row no-gutters">
+                    {% if product.product_image %}
+                        <div class="col-md-6" data-aos="fade-up" data-aos-duration="1500">
+                            <img src="{{ product.product_image.url }}" 
+                                 class="img-fluid h-100" 
+                                 style="object-fit: cover; border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem;"
+                                 alt="{{ product.name }}">
+                        </div>
+                    {% endif %}
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h2 class="card-title mb-3" style="font-family: monospace;" data-aos="fade-right" data-aos-duration="1500">{{ product.name|title }}</h2>
+                            <p class="text-muted small mb-4" data-aos="fade-right">{{ product.category.name }}</p>
+
+                            <div class="card-text mb-3" data-aos="fade-right" data-aos-duration="1500">
+                                {{ product.description }}
+                            </div>
+
+                            <div class="price-section mb-3">
+                                <h5 data-aos="fade-right" data-aos-duration="1500">
+                                    <strong style="font-family: monospace;">Selling Price:</strong>
+                                    <span class="text-dark">{{ product.selling_price|intcomma }} TZS</span>
+                                </h5>
+                                {% if product.discount_price %}
+                                    <h6 data-aos="fade-right" data-aos-duration="1500">
+                                        <strong style="font-family: monospace;">Discount Price:</strong>
+                                        <small class="text-danger">
+                                            <del>{{ product.discount_price|intcomma }} TZS</del>
+                                        </small>
+                                    </h6>
+                                {% endif %}
+                            </div>
+
+                            {% if roofing_attr %}
+                                <h5 class="mt-4" data-aos="fade-right" data-aos-duration="1500">Roofing Sheet Specifications</h5>
+                                <ul class="list-group mb-3" data-aos="fade-right" data-aos-duration="1500">
+                                    <li class="list-group-item"><strong>Color:</strong> {{ roofing_attr.color|title }}</li>
+                                    <li class="list-group-item"><strong>Gauge:</strong> {{ roofing_attr.gauge }}</li>
+                                    <li class="list-group-item"><strong>Profile:</strong> {{ roofing_attr.profile|title }}</li>
+                                </ul>
+                            {% endif %}
+
+                            {% if tile_attr %}
+                                <h5 class="mt-4" data-aos="fade-right" data-aos-duration="1500">Tile Specifications</h5>
+                                <ul class="list-group mb-3" data-aos="fade-right" data-aos-duration="1500">
+                                    <li class="list-group-item"><strong>Color:</strong> {{ tile_attr.color|title }}</li>
+                                    <li class="list-group-item"><strong>Gauge:</strong> {{ tile_attr.gauge }}</li>
+                                    <li class="list-group-item"><strong>Profile:</strong> {{ tile_attr.profile|title }}</li>
+                                </ul>
+                            {% endif %}
+
+                            <!-- Add to Cart Section -->
+                            <form method="post" action="{% url 'add_to_cart' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                
+                                <!-- Quantity Input Full Width -->
+                                <input type="number" 
+                                       name="quantity" 
+                                       value="1" 
+                                       min="1"
+                                       class="quantity-input form-control mb-3" 
+                                       placeholder="Enter quantity" data-aos="fade-right" data-aos-duration="1500">
+
+                                <!-- Add to Cart Button Below -->
+                                <button type="submit" class="btn btn-primary w-100 py-2">
+                                    <i class="bi bi-cart-fill mr-2"></i> Add to Cart
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Modern, elegant typography setup */
+    body {
+        font-family: "Poppins", "Inter", "Roboto", sans-serif;
+        color: #222;
+        line-height: 1.7;
+    }
+
+    h2, h5, h6 {
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        color: #174376;
+        letter-spacing: 0.5px;
+    }
+
+    p, li, .list-group-item {
+        font-size: 1rem;
+        color: #444;
+        letter-spacing: 0.3px;
+    }
+
+    .text-muted {
+        color: #6c757d !important;
+        font-style: italic;
+    }
+
+    strong {
+        color: #222;
+    }
+
+    /* Make product titles stand out */
+    .card-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #174376;
+        text-transform: capitalize;
+    }
+
+    /* Add a soft highlight for section titles */
+    h5.mt-4 {
+        border-left: 4px solid #ff9900;
+        padding-left: 10px;
+        font-weight: 600;
+        color: #333;
+    }
+/* Match blog detail card design */
+.card {
+    background-color: #fff !important;
+    border: none !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
+    border-radius: 0.5rem !important;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #eee;
+    background: transparent;
+    font-size: 1rem;
+}
+
+/* Full-width input and button styling */
+.quantity-input {
+    width: 100%;
+    height: 55px;
+    font-size: 1.1rem;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+.quantity-input:focus {
+    border-color: #ff9900;
+    box-shadow: 0 0 4px rgba(255,153,0,0.4);
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #ff9900;
+    border-color: #ff9900;
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: 8px;
+}
+
+.btn-primary:hover {
+    background-color: #e68a00;
+    border-color: #e68a00;
+}
+
+@media (max-width: 767.98px) {
+    .card .row.no-gutters img {
+        width: 100% !important;
+        height: 500px !important;
+        object-fit: cover !important;
+        display: block;
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+    }
+}
+</style>
+
+{% endblock %}

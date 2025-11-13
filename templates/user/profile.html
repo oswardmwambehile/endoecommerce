@@ -1,0 +1,134 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'user/nav.html' %}
+<hr style="border :2px solid  #174376;">
+
+<style>
+    body {
+        background: transparent !important;
+    }
+
+    .profile-container {
+        border: 1px solid #dcdcdc;
+        border-radius: 10px;
+        padding: 30px;
+        backdrop-filter: blur(3px);
+    }
+
+    /* Contact-style header circle */
+    .profile-header {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+
+    .contact-circle {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background-color: #eaeaea;
+        color: #555;
+        font-size: 32px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        border: 2px solid #ccc;
+        text-transform: uppercase;
+    }
+
+    .profile-header h4 {
+        margin: 0;
+        font-weight: 600;
+        color: #222;
+    }
+
+    .profile-header p {
+        margin: 0;
+        color: #666;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-left: 4px solid #f0c14b;
+        padding-left: 10px;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .profile-info p {
+        margin-bottom: 8px;
+        color: #444;
+        font-size: 15px;
+    }
+
+    .profile-info strong {
+        color: #111;
+    }
+
+    .action-buttons .btn {
+        min-width: 160px;
+        font-weight: 500;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .action-buttons .btn-warning:hover {
+        background-color: #f0ad4e;
+        color: white;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="profile-container">
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="contact-circle">
+                        {{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}
+                    </div>
+                    <div>
+                        <h4>{{ user.get_full_name|default:user.email }}</h4>
+                        <p>{{ user.email }}</p>
+                    </div>
+                </div>
+
+                <!-- Profile Info -->
+                <div class="profile-info">
+                    <h5 class="section-title">Account Information</h5>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Contact:</strong> {{ user.contact|default:"Not Provided" }}</p>
+                    <p><strong>Account Type:</strong> {{ user.user_type|title }}</p>
+                    <p><strong>Date Joined:</strong> {{ user.date_joined|date:"M d, Y" }}</p>
+
+                    <h5 class="section-title mt-4">Project & Site Details</h5>
+                    <p>
+                        <strong>Fund Available:</strong>
+                        {% if user.fund_available == 'Yes' %}
+                            <span class="text-success font-weight-bold">Yes</span>
+                        {% else %}
+                            <span class="text-danger font-weight-bold">No</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Pickup Location:</strong> {{ user.pickup_location|default:"Not Provided" }}</p>
+                    <p><strong>Site Region:</strong> {{ user.site_region|default:"Not Provided" }}</p>
+                    <p><strong>Site Location:</strong> {{ user.site_location|default:"Not Provided" }}</p>
+                </div>
+
+                <!-- Buttons -->
+                <div class="action-buttons mt-4 d-flex justify-content-between flex-wrap">
+                    <a href="{% url 'change_password' %}" class="btn btn-warning text-dark mb-2">
+                        <i class="fa fa-lock mr-2"></i> Update Password
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

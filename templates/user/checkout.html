@@ -1,0 +1,119 @@
+
+
+
+{% extends 'user/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+{% include 'user/nav.html' %}
+<hr style="border :2px solid  #174376;">
+
+<div class="container my-5">
+    <h2 class="mb-4" style="font-family: 'Montserrat', sans-serif; font-weight: 700; color: #174376; text-transform: capitalize; letter-spacing: 1px;">
+    Order Summary for {{ request.user.first_name }} {{ request.user.last_name }}
+</h2>
+
+    <!-- Display messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if cart_items %}
+
+    <!-- Download Button Above the Table -->
+    <div class="mb-3 text-right">
+        <a href="{%url 'download_order_pdf' %}" class="btn btn-primary" style="background-color: #174376; border-color: #174376;">
+            <i class="bi bi-file-earmark-pdf"></i> Download PDF
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover" style="min-width: 900px;">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Color</th>
+                    <th>Gauge</th>
+                    <th>Profile</th>
+                    <th>Quantity</th>
+                    <th>Total (TZS)</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+
+                    {% if item.product.roofing_attributes %}
+                        <td>{{ item.product.roofing_attributes.color|title }}</td>
+                        <td>{{ item.product.roofing_attributes.gauge }}</td>
+                        <td>{{ item.product.roofing_attributes.profile|title }}</td>
+                    {% elif item.product.tile_attributes %}
+                        <td>{{ item.product.tile_attributes.color|title }}</td>
+                        <td>{{ item.product.tile_attributes.gauge }}</td>
+                        <td>{{ item.product.tile_attributes.profile|title }}</td>
+                    {% else %}
+                        <td colspan="3" class="text-muted">—</td>
+                    {% endif %}
+
+                    <td>{{ item.quantity|intcomma }}</td>
+                    <td>{{ item.total_cost|floatformat:2|intcomma }} TZS</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="5" class="text-right">Total Product Cost</th>
+                    <th>{{ total_cart_price|floatformat:2|intcomma }} TZS</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Checkout Button -->
+<div class="d-flex justify-content-end mt-4">
+    <form method="POST" action="{% url 'checkout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-lg" 
+                style="
+                    background-color: #174376; 
+                    border-color: #174376; 
+                    color: #fff; 
+                    font-weight: 600; 
+                    font-size: 1.1rem; 
+                    letter-spacing: 0.5px; 
+                    padding: 0.6rem 1.5rem;
+                    display: flex; 
+                    align-items: center;
+                    gap: 0.5rem;
+                    transition: all 0.3s ease-in-out;
+                ">
+            <i class="bi bi-check-circle-fill" style="font-size: 1.3rem;"></i> 
+            Place Order
+        </button>
+    </form>
+</div>
+
+<style>
+    .btn:hover {
+        background-color: #0f2d5a !important; /* slightly darker on hover */
+        transform: translateY(-2px); /* subtle lift effect */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+</style>
+
+
+    {% else %}
+        <p class="text-center">Your cart is empty. Add items to your cart to proceed.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

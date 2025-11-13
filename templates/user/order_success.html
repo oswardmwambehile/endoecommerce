@@ -1,0 +1,22 @@
+{% extends 'user/base.html' %}
+
+{% block content %}
+{% include 'user/nav.html' %}
+<hr style="border :2px solid  #174376;">
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+
+            <!-- Success Badge -->
+            <div class="alert alert-success alert-dismissible fade show py-5" role="alert">
+                <h6 class="display-4 font-weight-bold mb-4">🎉 Thank You, {{ full_name }}!</h6>
+                <p class="lead">
+                    Your order has been successfully submitted, and we are genuinely excited to start processing it right away. Every item you have chosen will be carefully prepared and handled with the utmost attention to detail to ensure that it reaches you in perfect condition. We truly appreciate your trust in us, and we are committed to providing you with an exceptional shopping experience. Sit back and relax while we take care of the rest — soon, your order will be on its way, bringing you exactly what you expected and more. Your support means the world to us, and we are delighted to serve you!
+                </p>
+            </div>
+
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

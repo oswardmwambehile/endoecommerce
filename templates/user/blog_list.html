@@ -1,0 +1,180 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% block content %}
+{% include 'user/nav.html' %}
+<section class="inner_page_head" style="background-color: #174376">
+   <div class="container_fuild">
+      <div class="row">
+         <div class="col-md-12">
+            <div class="full text-center">
+               <h3 style="font-size: 21px; font-style: oblique; font-family: monospace;" data-aos="fade-up" data-aos-duration="1500">Discover Our Project Done</h3>
+               <p data-aos="fade-right" data-aos-duration="1500"> Explore our expertly crafted projects using premium roofing and tile materials.<br> 
+                Each project reflects quality, durability, and modern design—made to inspire and meet <br> your 
+                unique needs.
+                 Browse through our work and see how we turn visions into reality!</p>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center project-title" data-aos="fade-right" data-aos-duration="1500">
+    All Posts of Project Done
+</h1>
+
+<style>
+.project-title {
+    font-family: 'Montserrat', sans-serif; /* modern and clean */
+    font-weight: 700;
+    font-size: 2.8rem; /* prominent size */
+    letter-spacing: 1px; /* adds elegance */
+    color: #174376; /* deep blue */
+    text-transform: uppercase; /* makes it stand out */
+    line-height: 1.2;
+}
+@media (max-width: 768px) {
+    .project-title {
+        font-size: 2rem; /* responsive for smaller screens */
+    }
+}
+</style>
+
+    {% if blogs %}
+        <div class="row">
+            {% for blog in blogs %}
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-duration="1500">
+                    <div class="card h-100 shadow-sm">
+                        {% if blog.blog_image %}
+                            <img src="{{ blog.blog_image.url }}" class="card-img-top" alt="{{ blog.title }}">
+                        {% else %}
+                            <img src="{% static 'images/default-blog.jpg' %}" class="card-img-top" alt="Default Image">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ blog.title }}</h5>
+                            <p class="card-text">{{ blog.content|truncatewords:25 }}</p>
+                            <a href="{% url 'blog_detail' blog.slug %}" class="btn btn-primary btn-block" style="background-color: #174376;">Read More</a>
+                        </div>
+                        <div class="card-footer text-muted small">
+                           Posted By {{ blog.author.first_name }}{{ blog.author.last_name }} | {{ blog.created_at|date:"M d, Y" }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            No blog posts available.
+        </div>
+    {% endif %}
+</div>
+<style>
+    
+    .card-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #174376;
+    text-transform: capitalize; /* Capitalize first letter of each word */
+}
+
+
+/* Inner Page Heading */
+.inner_page_head h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+}
+
+.inner_page_head p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #f0f0f0;
+    line-height: 1.6;
+}
+
+/* Page main title */
+.project-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2.8rem;
+    letter-spacing: 1px;
+    color: #174376;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .project-title {
+        font-size: 2rem;
+    }
+}
+
+/* Blog card enhancements */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none; /* cleaner look */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Card title and text */
+.card-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #174376;
+}
+
+.card-text {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* Card footer */
+.card-footer {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+/* Read More button */
+.btn-primary {
+    background-color: #174376;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0f305d;
+    transform: translateY(-2px);
+}
+
+.card-img-top {
+    transition: transform 0.4s ease; /* smooth transition */
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.1); /* zoom in on hover */
+}
+
+/* Optional: add a subtle shadow on hover for the whole card */
+.card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.4s ease;
+}
+</style>
+
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "user/base.html" %}
+{% load static %}
+
+{% block content %}
+{% include 'user/nav.html' %}
+<hr style="border :2px solid  #174376;">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header  text-white" style="background-color: #174376;">
+                    <h4 class="mb-0">Submit Your Inquiry</h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            {{ form.name.label_tag }}
+                            {{ form.name }}
+                            {% for error in form.name.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.email.label_tag }}
+                            {{ form.email }}
+                            {% for error in form.email.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.phone.label_tag }}
+                            {{ form.phone }}
+                            {% for error in form.phone.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.message.label_tag }}
+                            {{ form.message }}
+                            {% for error in form.message.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block" style="background-color: #174376;">
+                            Submit Inquiry
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+  setTimeout(function() {
+    $('.alert').alert('close');
+  }, 3000);
+</script>
+
+{% endblock %}

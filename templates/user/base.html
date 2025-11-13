@@ -1,0 +1,190 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="{% static 'images/Ando-Tanzania-Blue-Logo_00-1 (2).svg' %}" type="">
+
+    <title>{% block title %}ANDO ECOMMERCE{% endblock %}</title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- font awesome style -->
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <!-- ✅ AOS CSS (in HEAD) -->
+<link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
+
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+   <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+    {% block content %}
+   
+    {% endblock %}
+
+   <!-- WhatsApp Floating Chat Button -->
+<!-- 🌐 WhatsApp Floating Chat Button -->
+<a href="https://wa.me/255689859255?text=Hello!%20I%20would%20like%20to%20learn%20more%20about%20your%20products."
+   class="whatsapp-float"
+   target="_blank"
+   title="Chat with us on WhatsApp">
+   <div class="whatsapp-content">
+       <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp Chat" class="whatsapp-icon">
+       <span class="whatsapp-text">Chat on WhatsApp</span>
+   </div>
+</a>
+
+<!-- 💅 WhatsApp Floating Button CSS -->
+<style>
+.whatsapp-float {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background-color: #25D366;
+    color: #fff;
+    border-radius: 50px;
+    text-decoration: none;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 10px 18px;
+    overflow: hidden;
+}
+
+.whatsapp-float:hover {
+    background-color: #20b358;
+    transform: translateY(-3px);
+}
+
+.whatsapp-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.whatsapp-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.whatsapp-text {
+    color: #fff;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+}
+
+
+
+
+/* Mobile view: icon only (text hidden) */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        padding: 0;
+    }
+
+    .whatsapp-text {
+        display: none;
+    }
+
+    .whatsapp-icon {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffff; /* white background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+/* Spinner styling */
+.spinner {
+  border: 8px solid #f3f3f3; /* light grey */
+  border-top: 8px solid #fdc60d; /* brand color */
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  animation: spin 1s linear infinite;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+<script>
+  window.addEventListener("load", function() {
+    const preloader = document.getElementById("preloader");
+
+    
+    setTimeout(() => {
+      preloader.style.opacity = '0';
+      preloader.style.transition = 'opacity 0.5s ease';
+      setTimeout(() => {
+        preloader.style.display = 'none';
+      }, 500);
+    }, 1500); 
+  });
+</script>
+
+
+
+ 
+<!-- ✅ AOS JS (at bottom of BODY) -->
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000,   // animation duration in ms (default 400)
+    once: true,       // animate only once while scrolling down
+    easing: 'ease-in-out',  // smooth animation
+  });
+</script>
+
+    <!-- jQery -->
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <!-- popper js -->
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <!-- bootstrap js -->
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <!-- custom js -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
