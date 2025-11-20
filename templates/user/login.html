@@ -3,7 +3,7 @@
 
 {% block content %}
 {% include 'user/nav.html' %}
-<hr style="border :2px solid  #174376;">
+<hr style="border: 1px dotted #174376;">
 
 <!-- Centered responsive login section -->
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
@@ -65,7 +65,7 @@
 
         <!-- Submit Button -->
         <div class="d-grid mt-4">
-          <button type="submit" class="btn btn-primary btn-block" id="loginButton">
+          <button type="submit" class="btn btn-primary btn-block" id="loginButton"  style="background-color: #174376; border-color: #174376;">
             <i class="fa fa-sign-in mr-2"></i>
             <span id="btnText">Login</span>
             <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
@@ -86,7 +86,7 @@
 <script>
   setTimeout(function() {
     $('.alert').alert('close');
-  }, 3000);
+  }, 4000);
 </script>
 
 <!-- Loading animation -->

@@ -4,194 +4,211 @@
 
 {% block content %}
 {% include 'user/nav.html' %}
-<hr style="border :2px solid  #174376;">
+
+<hr style="border: 1px dotted #174376;">
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="card mb-4 shadow-sm">
                 <div class="row no-gutters">
+
                     {% if product.product_image %}
-                        <div class="col-md-6" data-aos="fade-up" data-aos-duration="1500">
-                            <img src="{{ product.product_image.url }}" 
-                                 class="img-fluid h-100" 
-                                 style="object-fit: cover; border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem;"
-                                 alt="{{ product.name }}">
-                        </div>
+                    <div class="col-md-6">
+                        <img src="{{ product.product_image.url }}"
+                             class="img-fluid h-100"
+                             style="object-fit: cover; border-radius: 6px;">
+                    </div>
                     {% endif %}
+
                     <div class="col-md-6">
                         <div class="card-body">
-                            <h2 class="card-title mb-3" style="font-family: monospace;" data-aos="fade-right" data-aos-duration="1500">{{ product.name|title }}</h2>
-                            <p class="text-muted small mb-4" data-aos="fade-right">{{ product.category.name }}</p>
+                            <h2 class="card-title mb-3">{{ product.name|title }}</h2>
+                            <p class="text-muted small">{{ product.category.name }}</p>
+                            <p>{{ product.description }}</p>
+                            <p>{{ product.selling_price }} TZS/==</p>
 
-                            <div class="card-text mb-3" data-aos="fade-right" data-aos-duration="1500">
-                                {{ product.description }}
-                            </div>
-
-                            <div class="price-section mb-3">
-                                <h5 data-aos="fade-right" data-aos-duration="1500">
-                                    <strong style="font-family: monospace;">Selling Price:</strong>
-                                    <span class="text-dark">{{ product.selling_price|intcomma }} TZS</span>
-                                </h5>
-                                {% if product.discount_price %}
-                                    <h6 data-aos="fade-right" data-aos-duration="1500">
-                                        <strong style="font-family: monospace;">Discount Price:</strong>
-                                        <small class="text-danger">
-                                            <del>{{ product.discount_price|intcomma }} TZS</del>
-                                        </small>
-                                    </h6>
-                                {% endif %}
-                            </div>
-
-                            {% if roofing_attr %}
-                                <h5 class="mt-4" data-aos="fade-right" data-aos-duration="1500">Roofing Sheet Specifications</h5>
-                                <ul class="list-group mb-3" data-aos="fade-right" data-aos-duration="1500">
-                                    <li class="list-group-item"><strong>Color:</strong> {{ roofing_attr.color|title }}</li>
-                                    <li class="list-group-item"><strong>Gauge:</strong> {{ roofing_attr.gauge }}</li>
-                                    <li class="list-group-item"><strong>Profile:</strong> {{ roofing_attr.profile|title }}</li>
-                                </ul>
-                            {% endif %}
-
-                            {% if tile_attr %}
-                                <h5 class="mt-4" data-aos="fade-right" data-aos-duration="1500">Tile Specifications</h5>
-                                <ul class="list-group mb-3" data-aos="fade-right" data-aos-duration="1500">
-                                    <li class="list-group-item"><strong>Color:</strong> {{ tile_attr.color|title }}</li>
-                                    <li class="list-group-item"><strong>Gauge:</strong> {{ tile_attr.gauge }}</li>
-                                    <li class="list-group-item"><strong>Profile:</strong> {{ tile_attr.profile|title }}</li>
-                                </ul>
-                            {% endif %}
-
-                            <!-- Add to Cart Section -->
                             <form method="post" action="{% url 'add_to_cart' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="product_id" value="{{ product.id }}">
-                                
-                                <!-- Quantity Input Full Width -->
-                                <input type="number" 
-                                       name="quantity" 
-                                       value="1" 
-                                       min="1"
-                                       class="quantity-input form-control mb-3" 
-                                       placeholder="Enter quantity" data-aos="fade-right" data-aos-duration="1500">
 
-                                <!-- Add to Cart Button Below -->
+                                {% if product.roofing_attributes or product.tile_attributes %}
+                                    <h5 class="mt-4">Specifications</h5>
+
+                                    <!-- COLOR -->
+                                    <label>Color:</label>
+                                    <select name="color" class="form-control mb-2" required>
+                                        <option value="">-- Select Color --</option>
+                                        {% if product.roofing_attributes %}
+                                            {% for value, label in product.roofing_attributes.color_choices %}
+                                                <option value="{{ value }}" {% if product.roofing_attributes.color == value %}selected{% endif %}>{{ label }}</option>
+                                            {% endfor %}
+                                        {% elif product.tile_attributes %}
+                                            {% for value, label in product.tile_attributes.color_choices %}
+                                                <option value="{{ value }}" {% if product.tile_attributes.color == value %}selected{% endif %}>{{ label }}</option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+
+                                    <!-- PROFILE -->
+                                    <label>Profile:</label>
+                                    <select name="profile" class="form-control mb-2" required>
+                                        <option value="">-- Select Profile --</option>
+                                        {% if product.roofing_attributes %}
+                                            {% for value, label in product.roofing_attributes.profile_choices %}
+                                                <option value="{{ value }}" {% if product.roofing_attributes.profile == value %}selected{% endif %}>{{ label }}</option>
+                                            {% endfor %}
+                                        {% elif product.tile_attributes %}
+                                            {% for value, label in product.tile_attributes.profile_choices %}
+                                                <option value="{{ value }}" {% if product.tile_attributes.profile == value %}selected{% endif %}>{{ label }}</option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+
+                                    <!-- GAUGE -->
+                                    {% if product.gauges.all %}
+                                        <label>Gauge:</label>
+                                        <select name="gauge" id="gauge-select" class="form-control mb-2" required>
+                                            <option value="">-- Select Gauge --</option>
+                                            {% for gauge in product.gauges.all %}
+                                                <option value="{{ gauge.id }}" data-price="{{ gauge.price_per_meter }}"
+                                                    {% if product.gauge_id|stringformat:"s" == gauge.id|stringformat:"s" %}selected{% endif %}>
+                                                    {{ gauge.gauge }} ({{ gauge.price_per_meter|intcomma }} TZS)
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+
+                                    <label>Roofing Length (m):</label>
+                                    <input type="number" name="length"
+                                           class="form-control mb-2"
+                                           placeholder="Enter length"
+                                           min="0.1" step="0.1" required>
+                                {% endif %}
+
+                                {% if product.steel_attributes %}
+                                    <h5 class="mt-4">Steel Specifications</h5>
+
+                                    <label>Length (m):</label>
+                                    <input type="number" name="length" class="form-control mb-2"
+                                           placeholder="Length" min="0.1" step="0.1" required>
+
+                                    <label>Width (m):</label>
+                                    <input type="number" name="width" class="form-control mb-2"
+                                           placeholder="Width" min="0.1" step="0.1" required>
+
+                                    <label>Height (m):</label>
+                                    <input type="number" name="height" class="form-control mb-2"
+                                           placeholder="Height" min="0.1" step="0.1" required>
+                                {% endif %}
+
+                                {% if not product.roofing_attributes and not product.tile_attributes and not product.steel_attributes %}
+                                    <h5 class="mt-4">Product Details</h5>
+                                    <p class="text-muted">Price: {{ product.selling_price|intcomma }} TZS</p>
+                                {% endif %}
+
+                                <label>Quantity:</label>
+                                <input type="number" name="quantity" value="1" min="1"
+                                       class="form-control mb-3" required>
+
                                 <button type="submit" class="btn btn-primary w-100 py-2">
-                                    <i class="bi bi-cart-fill mr-2"></i> Add to Cart
+                                    <i class="bi bi-cart-fill"></i> Add to Cart
                                 </button>
                             </form>
 
+                            {% if product.roofing_attributes or product.tile_attributes %}
+                            <div class="price-section mt-3">
+                                <h5><strong>Selling Price:</strong> <span id="selling-price">-</span> TZS</h5>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
+
                 </div>
             </div>
-
-           
         </div>
     </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const gaugeSelect = document.getElementById("gauge-select");
+        const priceDisplay = document.getElementById("selling-price");
+
+        if (gaugeSelect && priceDisplay) {
+            function updatePrice() {
+                const opt = gaugeSelect.options[gaugeSelect.selectedIndex];
+                const price = opt?.getAttribute("data-price");
+                priceDisplay.textContent = price ? parseFloat(price).toLocaleString() : "-";
+            }
+            gaugeSelect.addEventListener("change", updatePrice);
+            updatePrice();
+        }
+    });
+    </script>
 </div>
 
 <style>
-    /* Modern, elegant typography setup */
-    body {
-        font-family: "Poppins", "Inter", "Roboto", sans-serif;
-        color: #222;
-        line-height: 1.7;
-    }
+body { font-family: "Poppins", sans-serif; color: #222; line-height: 1.7; }
+h2, h5 { font-weight: 600; color: #174376; }
+.card-title { font-size: 1.8rem; font-weight: 700; }
+h5.mt-4 { border-left: 4px solid #ff9900; padding-left: 10px; font-weight: 600; }
+.btn-primary { background-color: #ff9900; border-color: #ff9900; font-weight: 500; border-radius: 8px; }
+.btn-primary:hover { background-color: #e68a00; border-color: #e68a00; }
+</style>
 
-    h2, h5, h6 {
-        font-family: "Poppins", sans-serif;
-        font-weight: 600;
-        color: #174376;
-        letter-spacing: 0.5px;
-    }
+<hr class="mt-5" style="border: 2px dotted #174376;">
 
-    p, li, .list-group-item {
-        font-size: 1rem;
-        color: #444;
-        letter-spacing: 0.3px;
-    }
-
-    .text-muted {
-        color: #6c757d !important;
-        font-style: italic;
-    }
-
-    strong {
-        color: #222;
-    }
-
-    /* Make product titles stand out */
-    .card-title {
-        font-size: 1.8rem;
+<fieldset style="
+    border: 3px solid #174376;
+    padding: 25px;
+    border-radius: 10px;
+    margin-top: 20px;
+    overflow: visible !important;
+">
+    <legend style="
         font-weight: 700;
         color: #174376;
-        text-transform: capitalize;
-    }
+        font-size: 1.2rem;
+        padding: 0 10px;
+        background: #fff;
+    ">
+        Explore More Our Products Accessories Here
+    </legend>
+    <marquee behavior="" direction="">
+        <h3 class="text-center mb-4" style="font-weight:700; color:#174376;">
+            Accessories Products
+        </h3>
+    </marquee>
 
-    /* Add a soft highlight for section titles */
-    h5.mt-4 {
-        border-left: 4px solid #ff9900;
-        padding-left: 10px;
-        font-weight: 600;
-        color: #333;
-    }
-/* Match blog detail card design */
-.card {
-    background-color: #fff !important;
-    border: none !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
-    border-radius: 0.5rem !important;
-}
-
-.card-body {
-    padding: 1.5rem;
-}
-
-.list-group-item {
-    border: none;
-    border-bottom: 1px solid #eee;
-    background: transparent;
-    font-size: 1rem;
-}
-
-/* Full-width input and button styling */
-.quantity-input {
-    width: 100%;
-    height: 55px;
-    font-size: 1.1rem;
-    text-align: center;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    transition: all 0.3s ease;
-}
-
-.quantity-input:focus {
-    border-color: #ff9900;
-    box-shadow: 0 0 4px rgba(255,153,0,0.4);
-}
-
-/* Button styling */
-.btn-primary {
-    background-color: #ff9900;
-    border-color: #ff9900;
-    font-weight: 500;
-    font-size: 1rem;
-    border-radius: 8px;
-}
-
-.btn-primary:hover {
-    background-color: #e68a00;
-    border-color: #e68a00;
-}
-
-@media (max-width: 767.98px) {
-    .card .row.no-gutters img {
-        width: 100% !important;
-        height: 500px !important;
-        object-fit: cover !important;
-        display: block;
-        border-radius: 0.5rem 0.5rem 0 0 !important;
-    }
-}
-</style>
+    <div class="container mb-5" style="padding-left: 10px; padding-right: 10px;">
+        <div class="row">
+            {% for item in accessories_products %}
+            <div class="col-md-3 mb-4">
+                <div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; height: 100%;">
+                    {% if item.product_image %}
+                    <img src="{{ item.product_image.url }}" class="card-img-top" style="height: 180px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title mb-2" style="font-weight:600; color:#174376; font-size: 1.1rem;">
+                            {{ item.name|title }}
+                        </h6>
+                        <p class="text-muted" style="font-size: 0.9rem; height: 50px; overflow: hidden;">
+                            {{ item.description|truncatewords:15 }}
+                        </p>
+                        <p class="mb-3" style="font-weight:600; font-size: 1rem;">
+                            {{ item.selling_price|intcomma }} TZS/==
+                        </p>
+                        <a href="{% url 'product_detail' item.id %}" class="btn btn-outline-primary mt-auto" style="border-radius: 6px; padding: 6px 12px; font-size: 0.9rem; background-color: #174376; color: white;">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center w-100 text-muted">No accessories available.</p>
+            {% endfor %}
+        </div>
+    </div>
+</fieldset>
 
 {% endblock %}

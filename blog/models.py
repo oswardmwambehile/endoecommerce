@@ -53,3 +53,8 @@ class Inquiry(models.Model):
     class Meta:
         ordering = ['-created_at']
 
+
+    class Meta:
+        verbose_name_plural = "Inquries"
+
+

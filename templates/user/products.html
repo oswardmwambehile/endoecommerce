@@ -5,286 +5,168 @@
 {% block content %}
 {% include 'user/nav.html' %}
 
-<!-- Inner Page Section -->
+<!-- Inner Page Header -->
 <section class="inner_page_head" style="background-color: #174376">
    <div class="container_fuild">
       <div class="row">
          <div class="col-md-12">
             <div class="full text-center">
                <h3 style="font-size: 21px; font-style: oblique; font-family: monospace;" data-aos="fade-up" data-aos-duration="1500">Discover Our Amazing Products</h3>
-               <p data-aos="fade-up" data-aos-duration="1500">Quality products designed to meet your needs. Browse, shop, and enjoy!</p>
+               <p data-aos="fade-right" data-aos-duration="1500">
+                  Quality products designed to meet your needs. Browse, shop, and enjoy!<br>
+                  Filter easily by category, color, gauge, and profile for a smooth shopping experience.
+               </p>
             </div>
          </div>
       </div>
    </div>
 </section>
 
-<!-- Product Section -->
-<section class="product_section layout_padding">
+<div class="container mt-5">
+    
    
-   <div class="container">
-    <p style="
-    font-size: 18px; 
-    line-height: 1.8; 
-    font-weight: 500; 
-    color: #2c2c2c;
-    background: #f9fafc;
-    border-left: 5px solid #174376;
-    padding: 20px 25px; 
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-">
-   <marquee behavior="" direction=""><span style="font-size: 22px; font-weight: 600; color: #174376;">Welcome to Our Premium Collection!</span><br></marquee> 
 
-    Discover an exclusive range of top-quality products crafted to exceed your expectations. From durable roofing sheets to elegant tiles, every item is designed to combine performance, beauty, and long-lasting value. 
-
-    <br><br>
-    With our smart filtering system, you can easily refine your search by 
-    <strong style="color:#174376;">Category</strong>, 
-    <strong style="color:#174376;">Color</strong>, 
-    <strong style="color:#174376;">Gauge</strong>, and 
-    <strong style="color:#174376;">Profile</strong> — making it effortless to find exactly what you’re looking for.
-
-    <br><br>
-    Explore, customize, and enjoy a seamless shopping experience where innovation meets design. 
-    <span style="color:#174376; font-weight:600;">Transform your projects with quality you can trust.</span>
-</p>
-
-
-     <br><br> 
-<form id="filterForm" method="get" class="row mb-4 text-center" data-aos="fade-up" data-aos-duration="1500">
-      <div class="col-md-3 mb-2">
-        <select name="category" id="categorySelect" class="form-control">
-          <option value="">Select Category</option>
-          {% for cat in categories %}
-            <option value="{{ cat.id }}">{{ cat.name }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="col-md-3 mb-2">
-        <select name="color" id="colorSelect" class="form-control" disabled>
-          <option value="">Select Color</option>
-        </select>
-      </div>
-      <div class="col-md-3 mb-2">
-        <select name="gauge" id="gaugeSelect" class="form-control" disabled>
-          <option value="">Select Gauge</option>
-        </select>
-      </div>
-      <div class="col-md-3 mb-2">
-        <select name="profile" id="profileSelect" class="form-control" disabled>
-          <option value="">Select Profile</option>
-        </select>
-      </div>
-      <div class="col-12 mt-3">
-        <button type="submit" class="btn btn-primary" style="background-color: #174376; border-color: #174376;">Apply Filter</button>
-        <a href="{% url 'product-lists' %}" class="btn btn-secondary">Reset</a>
-      </div>
-    </form>
-      <div class="row">
-         {% for product in products %}
-         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-duration="1500">
-            <div class="box shadow-sm rounded">
-               <div class="img-box text-center p-2">
-                  <img src="{{ product.product_image.url }}" alt="{{ product.name }}" class="img-fluid rounded">
-               </div>
-               <div class="detail-box text-center p-2">
-                  <h5>Name : {{ product.name|title }}</h5> 
-                  <h6>Price : {{ product.selling_price|intcomma }} TZS</h6>
-               </div>
-               <div class="option_container text-center">
-                  <div class="options mt-2">
-                     <a href="{%url 'show_cart' %}" class="btn btn-primary btn-sm" style="background-color: #0f305d;">
-                        Shop Now
-                     </a>
-                     <a href="{%url 'product_detail' product.id %}" class="btn btn-outline-secondary btn-sm">
-                        View Details
-                     </a>
-                  </div>
-               </div>
+    {% if products %}
+    <div class="row">
+        {% for product in products %}
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4" data-aos="fade-up" data-aos-duration="1500">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ product.name|title }}</h5>
+                    <p class="card-description">{{ product.description|truncatewords:6 }}</p>
+                    <p class="card-text"><strong>{{ product.selling_price|intcomma }} TZS/==</strong></p>
+                    <div class="mt-4">
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-primary btn-lg w-100" style="background-color: #174376;">View Product</a>
+                    </div>
+                </div>
             </div>
-         </div>
-         {% empty %}
-         <div class="col-12 text-center py-5">
-            <p>Sorry, we currently have no products to show. Please check back soon!</p>
-         </div>
-         {% endfor %}
-      </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center">
+        No products available.
+    </div>
+    {% endif %}
+</div>
 
-      <div class="btn-box text-center mt-4">
-         <a href="" class="btn btn-success">
-            Browse All Products
-         </a>
-      </div>
-   </div>
-</section>
-<!-- End Product Section -->
-
+<!-- STYLES -->
 <style>
-    /* Ensure product details display in block and centered properly */
-    .detail-box h5,
-    .detail-box h6 {
-        display: block;             /* stack name and price vertically */
-        text-align: center;         /* center align the text */
-        margin: 5px 0;              /* spacing between them */
-        white-space: normal;        /* allow wrapping (avoid shrink) */
-        overflow: visible;          /* ensure full visibility */
-        text-overflow: unset;       /* remove ellipsis if any */
-        word-wrap: break-word;      /* break long names safely */
-    }
-
-    /* Make sure the product card keeps nice spacing */
-    .detail-box {
-        display: flex;
-        flex-direction: column;     /* vertical stacking inside */
-        align-items: center;        /* center horizontally */
-        justify-content: center;
-        padding: 10px;
-    }
-
-    /* Optional: style adjustments for name and price */
-    .detail-box h5 {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #174376;
-    }
-
-    .detail-box h6 {
-        font-size: 0.95rem;
-        font-weight: bold;
-        color: #333;
-    }
-
-    .inner_page_head h3 {
-    font-family: 'Montserrat', sans-serif; /* modern sans-serif */
-    font-weight: 700;
-    font-size: 2rem; /* larger, more prominent */
-    color: #ffffff;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-}
-
-/* Paragraph under heading */
-.inner_page_head p {
-    font-family: 'Roboto', sans-serif; /* clean and readable */
-    font-weight: 500;
-    font-size: 1.1rem;
-    color: #f0f0f0;
-    line-height: 1.8;
-}
-
-/* Feature paragraph style */
-.product_section p {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-    font-size: 1.1rem;
-    color: #2c2c2c;
-    line-height: 1.8;
-    background: #f9fafc;
-    border-left: 5px solid #174376;
-    padding: 20px 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.product_section p:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-}
-
-/* Product card titles and prices */
-.detail-box h5 {
+/* Page Title */
+.inner_page_head h3 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #174376;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
 }
-.detail-box h6 {
+.inner_page_head p {
     font-family: 'Roboto', sans-serif;
     font-size: 1rem;
-    font-weight: 500;
-    color: #333;
+    color: #f0f0f0;
+    line-height: 1.6;
 }
 
-/* Buttons hover effect */
-.btn-primary {
+/* Filter form styling */
+select.form-control {
+    border-radius: 8px;
+    border: 1px solid #174376;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Button enhancements */
+.btn-primary, .btn-secondary {
+    border: none;
+    border-radius: 8px;
     transition: all 0.3s ease;
+    font-weight: 600;
+    padding: 12px 28px;
+    font-size: 1rem;
+}
+.btn-primary {
+    background-color: #174376;
 }
 .btn-primary:hover {
     background-color: #0f305d;
     transform: translateY(-2px);
 }
+.btn-secondary:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+}
 
-/* Reset marquee font */
-marquee span {
+/* Product Cards */
+.card {
+    border: none;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    min-height: 420px; /* ensures uniform card height */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+.card-img-top {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    transition: transform 0.4s ease;
+    height: 200px;
+    object-fit: cover;
+}
+.card:hover .card-img-top {
+    transform: scale(1.08);
+}
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.card-title {
     font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #174376;
+    margin-bottom: 10px;
+}
+.card-description {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.5;
+    flex-grow: 1; /* keeps description area flexible */
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card-text {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Button at bottom of card */
+.card .btn {
+    align-self: center;
+}
+
+/* Empty state */
+.alert-info {
+    border-left: 5px solid #174376;
+    background: #f8f9fa;
 }
 </style>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const categorySelect = document.getElementById('categorySelect');
-    const colorSelect = document.getElementById('colorSelect');
-    const gaugeSelect = document.getElementById('gaugeSelect');
-    const profileSelect = document.getElementById('profileSelect');
 
-    categorySelect.addEventListener('change', function() {
-        const categoryId = this.value;
-
-        // Reset dropdowns
-        [colorSelect, gaugeSelect, profileSelect].forEach(sel => {
-            sel.innerHTML = `<option value="">Select ${sel.name.charAt(0).toUpperCase() + sel.name.slice(1)}</option>`;
-            sel.disabled = true;
-        });
-
-        if (!categoryId) return;
-
-        // Use Django URL template tag
-        const getAttributesUrl = "{% url 'get_attributes' %}";
-
-        fetch(`${getAttributesUrl}?category_id=${categoryId}`)
-            .then(res => {
-                if (!res.ok) throw new Error('Network response was not ok');
-                return res.json();
-            })
-            .then(data => {
-                if (data.colors.length) {
-                    data.colors.forEach(c => {
-                        const opt = document.createElement('option');
-                        opt.value = c;
-                        opt.text = c;
-                        colorSelect.add(opt);
-                    });
-                    colorSelect.disabled = false;
-                }
-                if (data.gauges.length) {
-                    data.gauges.forEach(g => {
-                        const opt = document.createElement('option');
-                        opt.value = g;
-                        opt.text = g;
-                        gaugeSelect.add(opt);
-                    });
-                    gaugeSelect.disabled = false;
-                }
-                if (data.profiles.length) {
-                    data.profiles.forEach(p => {
-                        const opt = document.createElement('option');
-                        opt.value = p;
-                        opt.text = p;
-                        profileSelect.add(opt);
-                    });
-                    profileSelect.disabled = false;
-                }
-            })
-            .catch(err => console.error('Error fetching attributes:', err));
-    });
-});
-</script>
-
-
-
+<!-- SCRIPT -->
 
 {% endblock %}

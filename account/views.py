@@ -6,9 +6,27 @@ from .models import User
 from django.contrib.auth import authenticate, login, logout
 import re
 
+from django.shortcuts import render
+from products.models import Category, Product
+
 
 def home(request):
-    return render(request, 'user/home.html')
+    categories = Category.objects.all()
+    featured_products = []
+
+    # Pick one product per category
+    for category in categories:
+        product = category.products.first()  # first product in category
+        if product:
+            featured_products.append(product)
+        if len(featured_products) >= 8:
+            break  
+
+    context = {
+        'featured_products': featured_products,
+    }
+    return render(request, 'user/home.html', context)
+
 
 def register(request):
     # Always available — so template can load dropdowns

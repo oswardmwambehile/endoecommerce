@@ -16,9 +16,20 @@ def products(request):
     if category_id:
         products = products.filter(category_id=category_id)
         category = Category.objects.get(id=category_id)
-        
-        # Apply attribute filters
-        if category.name.lower() == 'roofing sheet':
+
+        # Define your categories exactly
+        roofing_categories = [
+            'ando mobile steel structures', 
+            'ando long', 
+            'ando eco'
+        ]
+        tile_categories = [
+            'zebra roofing tiles', 
+            'ando decorative wall coatings'
+        ]
+
+        # Apply attribute filterszz
+        if category.name.lower() in roofing_categories:
             if color:
                 products = products.filter(roofing_attributes__color=color)
             if gauge:
@@ -26,7 +37,7 @@ def products(request):
             if profile:
                 products = products.filter(roofing_attributes__profile=profile)
 
-        elif category.name.lower() == 'tiles':
+        elif category.name.lower() in tile_categories:
             if color:
                 products = products.filter(tile_attributes__color=color)
             if gauge:
@@ -44,62 +55,90 @@ def products(request):
 def get_attributes(request):
     """AJAX endpoint to fetch available color/gauge/profile for selected category."""
     category_id = request.GET.get('category_id')
-    attributes = {}
+    attributes = {'colors': [], 'gauges': [], 'profiles': []}
 
-    if category_id:
-        try:
-            category = Category.objects.get(id=category_id)
-        except Category.DoesNotExist:
-            return JsonResponse(attributes)
+    if not category_id:
+        return JsonResponse(attributes)
 
-        if category.name.lower() == 'roofing sheet':
-            attrs = RoofingSheetAttribute.objects.filter(product__category=category)
-            colors = attrs.values_list('color', flat=True).distinct()
-            gauges = attrs.values_list('gauge', flat=True).distinct()
-            profiles = attrs.values_list('profile', flat=True).distinct()
-            attributes = {
-                'colors': list(colors),
-                'gauges': list(gauges),
-                'profiles': list(profiles),
-            }
+    try:
+        category = Category.objects.get(id=category_id)
+    except Category.DoesNotExist:
+        return JsonResponse(attributes)
 
-        elif category.name.lower() == 'tiles':
-            attrs = TileAttribute.objects.filter(product__category=category)
-            colors = attrs.values_list('color', flat=True).distinct()
-            gauges = attrs.values_list('gauge', flat=True).distinct()
-            profiles = attrs.values_list('profile', flat=True).distinct()
-            attributes = {
-                'colors': list(colors),
-                'gauges': list(gauges),
-                'profiles': list(profiles),
-            }
+    # Define your categories exactly
+    roofing_categories = [
+        'ando mobile steel structures', 
+        'ando long', 
+        'ando eco'
+    ]
+    tile_categories = [
+        'zebra roofing tiles', 
+        'ando decorative wall coatings'
+    ]
+
+    # Collect attributes dynamically
+    attrs = []
+    if category.name.lower() in roofing_categories:
+        attrs = RoofingSheetAttribute.objects.filter(product__category=category)
+    elif category.name.lower() in tile_categories:
+        attrs = TileAttribute.objects.filter(product__category=category)
+
+    if attrs:
+        attributes = {
+            'colors': list(attrs.values_list('color', flat=True).distinct()),
+            'gauges': list(attrs.values_list('gauge', flat=True).distinct()),
+            'profiles': list(attrs.values_list('profile', flat=True).distinct()),
+        }
 
     return JsonResponse(attributes)
 
 
+
 from django.shortcuts import render, get_object_or_404
-from .models import Product, RoofingSheetAttribute, TileAttribute
+from .models import Product
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
     roofing_attr = getattr(product, 'roofing_attributes', None)
     tile_attr = getattr(product, 'tile_attributes', None)
+    steel_attr = getattr(product, 'steel_attributes', None)
 
-    # If both exist, decide based on category
-    if product.category == 'roofing_sheet':
-        roofing_attr = getattr(product, 'roofing_attributes', None)
-        tile_attr = None
-    elif product.category == 'tiles':
-        tile_attr = getattr(product, 'tile_attributes', None)
-        roofing_attr = None
+    # Determine dropdown options
+    color_choices = []
+    profile_choices = []
+
+    if roofing_attr:
+        color_choices = roofing_attr.color_choices()
+        profile_choices = roofing_attr.profile_choices()
+    elif tile_attr:
+        color_choices = tile_attr.color_choices()
+        profile_choices = tile_attr.profile_choices()
+
+    # Gauges
+    gauges = product.gauges.all() if hasattr(product, 'gauges') else []
+
+    # ✔ NEW: Accessories section (NON-destructive)
+    accessories_products = Product.objects.filter(
+        category__name="Accessories"
+    ).exclude(id=product.id)
 
     context = {
         'product': product,
         'roofing_attr': roofing_attr,
         'tile_attr': tile_attr,
+        'steel_attr': steel_attr,
+        'color_choices': color_choices,
+        'profile_choices': profile_choices,
+        'gauges': gauges,
+        'accessories_products': accessories_products,   # ← added
     }
+
     return render(request, 'user/product_detail.html', context)
+
+
+
+
 
 
 
@@ -108,10 +147,6 @@ from django.contrib import messages
 from .models import Product, Category
 
 def category(request, pk):
-    if not request.user.is_authenticated:
-        messages.error(request, 'You must login first to access the page')
-        return redirect('login')
-    
     # Use get_object_or_404 with name instead of pk
     category_obj = get_object_or_404(Category, name=pk)
     

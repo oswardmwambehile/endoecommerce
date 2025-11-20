@@ -2,234 +2,245 @@
 {% load static %}
 
 {% block content %}
-<div class="hero_area">
-    {% include 'user/nav.html' %}
-   
+{% include 'user/nav.html' %}
+<hr style="border: 1px dotted #174376;">
 
-    <!-- slider section -->
-    <section class="slider_section">
-        <div class="slider_bg_box">
-            <img src="{% static 'images/banner.jpg' %}" alt="">
-        </div>
-        <div id="customCarousel1" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-7 col-lg-6">
-                                <div class="detail-box">
-                                    <h1>
-                                       <span style="color: #fdc60d;">Ando Eco - MC(O/P) </span>
-                                        <span style="color: #174376;">Ando Eco – SW (N/P)</span>
-                                    </h1>
-                                    <p style="color: white;">
-                                       Ando Eco design takes into consideration the world of today whereby the steel prices are going up tremendously by giving you a maximum cover at minimum cost.Overall Width: 910mm Effective Cover Width: 840mm Available Thickness: 28g and 26g
-                                    </p>
-                                    <div class="btn-box">
-                                        <a href="{%url 'show_cart' %}" class="btn1" style="background-color: rgb(36, 36, 179); border-color: blue;">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- Slider Section -->
+<section class="slider_section" style="margin: 0 auto; max-width: 1100px; padding: 30px 0;">
+    <div id="customCarousel1" class="carousel slide" data-ride="carousel" data-interval="1000">
 
-                <!-- Second slide -->
-                <div class="carousel-item">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-7 col-lg-6">
-                                <div class="detail-box">
-                                    <h1>
-                                        <span style="color: #fdc60d;">Zebra Tiles </span>
-                                        <span style="color: #174376;">(Millano,Shingle,Shake, Classic)</span>
-                                    </h1>
-                                    <p style="color: white;">
-                                        Zebra Roofing tiles are manufactured from 26-gauge Alu-zinc steel coated with natural volcanic rock chips utilizing high adhesive resin binder to ensure the chips stay permanently fixed to the tiles.Features a deep profile to enhance the contour look-like lines from a distance to match the traditional thatch roofing style with modern steel roofing tiles technology.
-                                    <div class="btn-box">
-                                        <a href="{%url 'show_cart'%}" class="btn1" style="background-color: rgb(36, 36, 179); border-color: blue;">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Carousel Inner -->
+        <div class="carousel-inner">
 
-                <!-- Third slide -->
-                <div class="carousel-item">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-7 col-lg-6">
-                                <div class="detail-box">
-                                    <h1>
-                                        <span style="color: #fdc60d;">Ando Decorative Wall Coatings </span><br>
-                                        <span style="color: #174376;"> Ando Décor Plaster</span>
-                                    </h1>
-                                    <p style="color: white;">
-                                        Ando Decorative wall coatings come in two forms (Ando Marble wall coating & Ando Décor Plaster) available in variety of colors and combination. The new Ando decorative Wall coatings products offer the following features;
-
-– The best water resistant for the substrate.
-– Protects and preserves substrate.
-– Chemical adhesion factor
-– Fire proof
-– Minimum dirt retention.
-– No Crack, No shrinkage.
-– Self curing.
-– Weather resistant.
-– Superior abrasion factor.
-– Variety patterns can be achieved
-                                    </p>
-                                    <div class="btn-box">
-                                        <a href="{%url 'show_cart' %}" class="btn1" style="background-color: rgb(36, 36, 179); border-color: blue;">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <!-- Slide 1 -->
+            <div class="carousel-item active text-center">
+                <img src="{% static 'images/banner1.png' %}" class="d-block mx-auto img-fluid" alt="Banner 1">
             </div>
-            <div class="container">
-                <ol class="carousel-indicators">
-                    <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
-                    <li data-target="#customCarousel1" data-slide-to="1"></li>
-                    <li data-target="#customCarousel1" data-slide-to="2"></li>
-                </ol>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item text-center">
+                <img src="{% static 'images/banner 2.png' %}" class="d-block mx-auto img-fluid" alt="Banner 2">
             </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item text-center">
+                <img src="{% static 'images/banner 3.png' %}" class="d-block mx-auto img-fluid" alt="Banner 3">
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="carousel-item text-center">
+                <img src="{% static 'images/banner1.png' %}" class="d-block mx-auto img-fluid" alt="Banner 4">
+            </div>
+
+            <!-- Slide 5 -->
+            <div class="carousel-item text-center">
+                <img src="{% static 'images/banner 2.png' %}" class="d-block mx-auto img-fluid" alt="Banner 5">
+            </div>
+
         </div>
-    </section>
-    <!-- end slider section -->
-</div>
 
-
- {% include 'user/why.html' %}
-
-
-<footer class="footer_section" style="background-color: #111; color: #e0e0e0; padding: 60px 0; font-family: 'Open Sans', sans-serif;">
-  <div class="container">
-    <div class="row">
-
-      <!-- Contact Info -->
-      <div class="col-md-4 footer-col mb-4 mb-md-0">
-        <div class="footer_contact">
-          <h4 style="color: #fdc60d; font-weight: 700; margin-bottom: 20px; letter-spacing: 1px;">
-            Reach Us
-          </h4>
-          <div class="contact_link_box" style="line-height: 2.0;">
-            <a href="#" style="display: flex; align-items: center; color: #e0e0e0; text-decoration: none; transition: 0.3s;">
-              <i class="fa fa-map-marker" aria-hidden="true" style="margin-right: 10px; color: #fdc60d;"></i>
-              Dar es Salaam, Tanzania
-            </a>
-            <a href="tel:+011234567890" style="display: flex; align-items: center; color: #e0e0e0; text-decoration: none; transition: 0.3s;">
-              <i class="fa fa-phone" aria-hidden="true" style="margin-right: 10px; color: #fdc60d;"></i>
-              +255 682345678
-            </a>
-            <a href="mailto:Andoroofingmaterial@gmail.com" style="display: flex; align-items: center; color: #e0e0e0; text-decoration: none; transition: 0.3s;">
-              <i class="fa fa-envelope" aria-hidden="true" style="margin-right: 10px; color: #fdc60d;"></i>
-              Andoroofingmaterial@gmail.com
-            </a>
-          </div>
+        <!-- Custom Bar Indicators -->
+        <div class="carousel-bar-indicators d-flex justify-content-center mt-2 mb-2">
+            <div class="indicator-bar active" data-target="#customCarousel1" data-slide-to="0"></div>
+            <div class="indicator-bar" data-target="#customCarousel1" data-slide-to="1"></div>
+            <div class="indicator-bar" data-target="#customCarousel1" data-slide-to="2"></div>
+            <div class="indicator-bar" data-target="#customCarousel1" data-slide-to="3"></div>
+            <div class="indicator-bar" data-target="#customCarousel1" data-slide-to="4"></div>
         </div>
-      </div>
 
-      <!-- Company Info & Social -->
-      <div class="col-md-4 footer-col mb-4 mb-md-0 text-center">
-        <div class="footer_detail">
-          <a href="index.html" class="footer-logo" style="font-size: 1.8rem; font-weight: 700; color: #fdc60d; text-decoration: none; letter-spacing: 2px;">
-            ANDO ECOMMERCE
-          </a>
-          <p style="margin-top: 15px; color: #cccccc; font-size: 0.95rem; line-height: 1.7;">
-            Experience top-quality roofing materials and reliable service, crafted to bring strength, style, and durability to your projects.
-          </p>
-          <div class="footer_social mt-3">
-            <a href="#" style="color: #e0e0e0; margin: 0 8px; font-size: 1.2rem; transition: 0.3s;">
-              <i class="fa fa-facebook"></i>
-            </a>
-            <a href="#" style="color: #e0e0e0; margin: 0 8px; font-size: 1.2rem; transition: 0.3s;">
-              <i class="fa fa-twitter"></i>
-            </a>
-            <a href="#" style="color: #e0e0e0; margin: 0 8px; font-size: 1.2rem; transition: 0.3s;">
-              <i class="fa fa-linkedin"></i>
-            </a>
-            <a href="#" style="color: #e0e0e0; margin: 0 8px; font-size: 1.2rem; transition: 0.3s;">
-              <i class="fa fa-instagram"></i>
-            </a>
-            <a href="#" style="color: #e0e0e0; margin: 0 8px; font-size: 1.2rem; transition: 0.3s;">
-              <i class="fa fa-pinterest"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Map -->
-      <div class="col-md-4 footer-col">
-        <div class="map_container">
-          <div class="map">
-            <div id="googleMap" style="width: 100%; height: 200px; border-radius: 10px; overflow: hidden;"></div>
-          </div>
-        </div>
-      </div>
-
+        <!-- Controls -->
+        <a class="carousel-control-prev" href="#customCarousel1" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#customCarousel1" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
+</section>
 
-    <!-- Footer Bottom -->
-    <div class="footer-info text-center mt-4 pt-4 border-top" style="border-color: #333;">
-      <p style="color: #888; font-size: 0.9rem;">
-        &copy; <span id="displayYear"></span> All Rights Reserved By
-        <a href="" target="_blank" style="color: #fdc60d; text-decoration: none;">Ando product Limited</a><br>
-        
-    </div>
-  </div>
-</footer>
+<!-- Logo Section -->
 
-<script>
-  // Display current year automatically
-  document.getElementById("displayYear").textContent = new Date().getFullYear();
-</script>
+{% include 'user/feature.html' %}
 
-<!-- Optional hover effect for links and icons -->
-<style>
-  .footer-col a:hover {
-    color: #fdc60d !important;
-    transform: translateY(-2px);
-    transition: 0.3s;
-  }
-  .footer_social a:hover {
-    color: #fdc60d !important;
-    transform: scale(1.2);
-  }
-</style>
+
+{% include 'user/why.html' %}
 
 
 <style>
+/* Slider Section */
+.slider_section {
+    width: 100%;
+    padding: 0;
+}
+.slider_section img {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: contain;
+    border-radius: 8px;
+}
 
+/* Make carousel taller on small screens */
 @media (max-width: 768px) {
-    /* Make the entire h1 smaller */
-    .detail-box h1 {
-        font-size: 1.2rem;      /* uniform size for all lines inside h1 */
-        line-height: 1.3;
-        color: white;
+    .slider_section img {
+        max-height: 900px;
+        object-fit: cover;
     }
+}
 
-    /* Remove font-size on span so it inherits h1 size */
-    .detail-box h1 span {
-        font-size: inherit;
-        color: white;
+/* Custom Bar Indicators */
+.carousel-bar-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+.indicator-bar {
+    width: 60px;
+    height: 8px;
+    background-color: #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.indicator-bar.active {
+    background-color: #174376;
+}
+
+/* Carousel Controls */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(23, 67, 118, 0.8);
+    border-radius: 50%;
+    padding: 10px;
+}
+
+/* Logo Section */
+.carousel-logos {
+    gap: 60px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.carousel-logos img {
+    height: 80px;
+    object-fit: contain;
+    transition: transform 0.3s;
+    margin: 10px 20px;
+}
+.carousel-logos img:hover {
+    transform: scale(1.1);
+}
+
+/* Responsive Logos */
+@media (max-width: 768px) {
+    .carousel-logos {
+        flex-direction: column;
+        gap: 30px;
     }
-
-    .detail-box p {
-        font-size: 0.9rem;      /* smaller paragraph */
-        line-height: 1.4;
-        color: white;
+    .carousel-logos img {
+        margin: 0 auto;
+        height: 70px;
     }
-
-    
-
-   
 }
 </style>
 
+<!-- Carousel JS -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const indicators = document.querySelectorAll('.indicator-bar');
+    const carousel = $('#customCarousel1');
+
+    carousel.carousel({
+        interval: 2000,
+        ride: 'carousel'
+    });
+
+    indicators.forEach((bar, index) => {
+        bar.addEventListener('click', () => {
+            carousel.carousel(index);
+        });
+    });
+
+    carousel.on('slide.bs.carousel', function(e) {
+        document.querySelector('.indicator-bar.active').classList.remove('active');
+        indicators[e.to].classList.add('active');
+    });
+});
+</script>
+
+<!-- 🔼 BACK TO TOP BAR -->
+<div style="
+    background-color: #174376;
+    color: white;
+    padding: 12px 0;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+"
+onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+    Back to top
+</div>
+
+<!-- 🔻 YELLOW AMAZON-STYLE FOOTER -->
+<footer style="background-color: #fdc60d; color: #222; padding: 50px 0;">
+
+    <div class="container">
+        <div class="row">
+
+            <!-- Column 1 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: #174376; font-weight: 700;">Get to Know Us</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: #222; text-decoration: none;">About Us</a></li>
+                    <li><a href="#" style="color: #222; text-decoration: none;">Our Products</a></li>
+                    <li><a href="#" style="color: #222; text-decoration: none;">Careers</a></li>
+                    <li><a href="#" style="color: #222; text-decoration: none;">Blog</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: #174376; font-weight: 700;">Customer Service</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: #222; text-decoration: none;">Contact Us</a></li>
+                    <li><a href="#" style="color: #222; text-decoration: none;">Shipping</a></li>
+                    <li><a href="#" style="color: #222; text-decoration: none;">Returns</a></li>
+                    <li><a href="#" style="color: #222; text-decoration: none;">Help Center</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: #174376; font-weight: 700;">Connect With Us</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: #222; text-decoration: none;">Facebook</a></li>
+                    <li><a href="#" style="color: #222; text-decoration: none;">Instagram</a></li>
+                    <li><a href="#" style="color: #222; text-decoration: none;">WhatsApp</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: #174376; font-weight: 700;">Our Business</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: #222; text-decoration: none;">Roofing Sheets</a></li>
+                    <li><a href="#" style="color: #222; text-decoration: none;">Tiles</a></li>
+                    <li><a href="#" style="color: #222; text-decoration: none;">Accessories</a></li>
+                    <li><a href="#" style="color: #222; text-decoration: none;">Bulk Orders</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Line -->
+    <div class="text-center mt-4" style="border-top: 1px solid #e6b800; padding-top: 20px;">
+        <p style="color: #222; font-size: 14px;">
+            © {{ year }} Ando Roofing Product Limited — All Rights Reserved.
+        </p>
+    </div>
+</footer>
+
 
 {% endblock %}
-
-                        

@@ -2,21 +2,89 @@
 
 {% block content %}
 {% include 'user/nav.html' %}
-<hr style="border :2px solid  #174376;">
+
+<hr style="border: 1px dotted #174376;">
+
 <div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 text-center">
+        <div class="col-md-8">
 
-            <!-- Success Badge -->
-            <div class="alert alert-success alert-dismissible fade show py-5" role="alert">
-                <h6 class="display-4 font-weight-bold mb-4">🎉 Thank You, {{ full_name }}!</h6>
-                <p class="lead">
-                    Your order has been successfully submitted, and we are genuinely excited to start processing it right away. Every item you have chosen will be carefully prepared and handled with the utmost attention to detail to ensure that it reaches you in perfect condition. We truly appreciate your trust in us, and we are committed to providing you with an exceptional shopping experience. Sit back and relax while we take care of the rest — soon, your order will be on its way, bringing you exactly what you expected and more. Your support means the world to us, and we are delighted to serve you!
+            <div class="card shadow-sm border-0 p-4 text-center">
+
+                <!-- Bootstrap Success Icon -->
+                <i class="bi bi-check-circle-fill" style="font-size: 55px; color: #28a745;"></i>
+
+                <h2 class="mt-3" style="font-weight: 700; color: #174376;">
+                    Thank You, {{ full_name }}!
+                </h2>
+
+                <p class="mt-3" style="font-size: 1.1rem; color:#444; line-height:1.7;">
+                    Your order has been successfully submitted, and we are genuinely excited to start processing it right away. 
+                    Every item you have chosen will be carefully prepared and handled with the utmost attention to detail 
+                    to ensure that it reaches you in perfect condition. We truly appreciate your trust in us, and we are 
+                    committed to providing you with an exceptional shopping experience. Sit back and relax while we take care 
+                    of the rest — soon, your order will be on its way, bringing you exactly what you expected and more. 
+                    Your support means the world to us, and we are delighted to serve you!
                 </p>
+
             </div>
 
-            
         </div>
     </div>
 </div>
+
+<style>
+
+/* Smooth fade + slide for whole card */
+.card {
+    animation: cardFadeUp 1s ease-out forwards;
+}
+
+/* Keep icon visible before animation */
+.card i {
+    animation: iconPop 0.8s ease-out 0.2s forwards;
+    transform-origin: center;
+}
+
+/* Premium Amazon-style title */
+.card h2 {
+    font-family: "Amazon Ember", "Poppins", sans-serif;
+    letter-spacing: .5px;
+    animation: textFade 1s ease-out 0.4s forwards;
+    opacity: 0;
+}
+
+/* Premium paragraph text */
+.card p {
+    font-family: "Amazon Ember", "Open Sans", Arial, sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #444 !important;
+    animation: textFade 1.1s ease-out 0.6s forwards;
+    opacity: 0;
+}
+
+/* ========================
+      KEYFRAMES
+======================== */
+
+@keyframes cardFadeUp {
+    0% { opacity: 0; transform: translateY(35px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes iconPop {
+    0% { transform: scale(0.7); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes textFade {
+    0% { opacity: 0; transform: translateY(18px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+
+
 {% endblock %}

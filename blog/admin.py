@@ -38,3 +38,17 @@ class CommentAdmin(admin.ModelAdmin):
     def commenter_full_name(self, obj):
         return f"{obj.user.first_name} {obj.user.last_name}"
     commenter_full_name.short_description = 'Commenter'
+
+
+
+from django.contrib import admin
+from .models import Inquiry
+
+@admin.register(Inquiry)
+class InquiryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'phone', 'created_at', 'updated_at')
+    search_fields = ('name', 'email', 'phone', 'message')
+    list_filter = ('created_at',)
+    ordering = ('-created_at',)
+    readonly_fields = ('created_at', 'updated_at')
+
