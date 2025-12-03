@@ -1,16 +1,33 @@
-{% extends "user/base.html" %}
+{% extends "admin/base.html" %}
 {% load static %}
+{% load humanize %}
+
+
+
 
 {% block content %}
-{% include 'user/nav.html' %}
-<hr style="border: 1px dotted #174376;">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Topbar Start -->
+        {% include 'admin/topnav.html' %}
+        <!-- Topbar End -->
+
+        <!-- Navbar & Hero Start -->
+        {% include 'admin/nav.html' %}
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow-sm">
-                <div class="card-header  text-white" style="background-color: #174376;">
-                    <h4 class="mb-0">Submit Your Inquiry</h4>
+                <div class="card-header  text-white" style="background-color: #174376; color: white;">
+                    <h4 class="mb-0" style="color: white;">Submit Your Inquiry</h4>
                 </div>
                 <div class="card-body">
                     {% if messages %}
@@ -58,8 +75,8 @@
                                 <div class="text-danger">{{ error }}</div>
                             {% endfor %}
                         </div>
-
-                        <button type="submit" class="btn btn-primary btn-block" style="background-color: #174376;">
+<br><br>
+                        <button type="submit" class="btn  btn-block" style="background-color: #174376; color: white;">
                             Submit Inquiry
                         </button>
                     </form>

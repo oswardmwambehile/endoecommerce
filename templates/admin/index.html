@@ -1,0 +1,56 @@
+{% extends "admin/base.html" %}
+
+
+{% block content %}
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Topbar Start -->
+        {% include 'admin/topnav.html' %}
+        <!-- Topbar End -->
+
+        <!-- Navbar & Hero Start -->
+        {% include 'admin/nav.html' %}
+        <!-- Navbar & Hero End -->
+
+        <!-- Carousel Start -->
+         {% include 'admin/cursoursel.html' %}
+        <!-- Carousel End -->
+
+       
+
+        <!-- Products Offer Start -->
+        {% include 'admin/product.html' %}
+        <!-- Products Offer End -->
+
+
+        <!-- Our Products Start -->
+       {% include 'admin/products.html' %}
+        <!-- Our Products End -->
+
+        <!-- Product Banner Start -->
+       {% include 'admin/banner.html' %}
+       <br><br><br><br><br><br>
+        <!-- Product Banner End -->
+
+        <!-- Product List Satrt -->
+       
+        <!-- Product List End -->
+
+       
+
+        <!-- Footer Start -->
+        
+        <!-- Footer End -->
+{% endblock %}
+
+        
+
+
+        

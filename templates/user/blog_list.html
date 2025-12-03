@@ -1,13 +1,31 @@
-{% extends 'user/base.html' %}
+{% extends "admin/base.html" %}
 {% load static %}
+
+
+
 {% block content %}
-{% include 'user/nav.html' %}
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Topbar Start -->
+        {% include 'admin/topnav.html' %}
+        <!-- Topbar End -->
+
+        <!-- Navbar & Hero Start -->
+        {% include 'admin/nav.html' %}
+
 <section class="inner_page_head" style="background-color: #174376">
    <div class="container_fuild">
       <div class="row">
          <div class="col-md-12">
             <div class="full text-center">
-               <h3 style="font-size: 21px; font-style: oblique; font-family: monospace;" data-aos="fade-up" data-aos-duration="1500">Discover Our Project Done</h3>
+               <h3 style="font-size: 21px; font-style: oblique; font-family: monospace;" data-aos="fade-up" data-aos-duration="1500"></h3>
                <p data-aos="fade-right" data-aos-duration="1500"> Explore our expertly crafted projects using premium roofing and tile materials.<br> 
                 Each project reflects quality, durability, and modern design—made to inspire and meet <br> your 
                 unique needs.
@@ -53,7 +71,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ blog.title }}</h5>
                             <p class="card-text">{{ blog.content|truncatewords:25 }}</p>
-                            <a href="{% url 'blog_detail' blog.slug %}" class="btn btn-primary btn-block" style="background-color: #174376;">Read More</a>
+                            <a href="{% url 'blog_detail' blog.slug %}" class="btn  btn-block" style="background-color: #174376; color: white;">Read More</a>
                         </div>
                         <div class="card-footer text-muted small">
                            Posted By {{ blog.author.first_name }}{{ blog.author.last_name }} | {{ blog.created_at|date:"M d, Y" }}

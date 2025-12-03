@@ -1,9 +1,27 @@
-{% extends "user/base.html" %}
+{% extends "admin/base.html" %}
 {% load static %}
 
+
+{% load static %}
+
+
+
 {% block content %}
-{% include 'user/nav.html' %}
-<hr style="border: 1px dotted #174376;">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Topbar Start -->
+        {% include 'admin/topnav.html' %}
+        <!-- Topbar End -->
+
+        <!-- Navbar & Hero Start -->
+        {% include 'admin/nav.html' %}
 
 <!-- Centered responsive login section -->
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
@@ -40,9 +58,7 @@
           <label for="username" class="font-weight-bold">Email</label>
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text bg-transparent border-right-0">
-                <i class="fa fa-envelope text-primary"></i>
-              </span>
+              
             </div>
             <input type="email" name="username" id="username" 
                    class="form-control border-left-0" placeholder="Enter your email" required>
@@ -54,9 +70,7 @@
           <label for="password" class="font-weight-bold">Password</label>
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text bg-transparent border-right-0">
-                <i class="fa fa-lock text-primary"></i>
-              </span>
+              
             </div>
             <input type="password" name="password" id="password" 
                    class="form-control border-left-0" placeholder="Enter your password" required>
@@ -65,7 +79,7 @@
 
         <!-- Submit Button -->
         <div class="d-grid mt-4">
-          <button type="submit" class="btn btn-primary btn-block" id="loginButton"  style="background-color: #174376; border-color: #174376;">
+          <button type="submit" class="btn  btn-block" id="loginButton"  style="background-color: #174376; border-color: #174376; color: white;">
             <i class="fa fa-sign-in mr-2"></i>
             <span id="btnText">Login</span>
             <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>

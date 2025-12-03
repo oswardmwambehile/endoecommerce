@@ -5,12 +5,12 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('account.urls')),  
+    path('account/', include('account.urls')),  
     path('products/', include('products.urls')),  
     path('cart/', include('cart.urls')),  
     path('orders/', include('orders.urls')),  
      
-    path('blogs/', include('blog.urls')),  
+    path('', include('blog.urls')),  
 
 ]
 

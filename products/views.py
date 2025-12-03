@@ -3,53 +3,74 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Product, Category, RoofingSheetAttribute, TileAttribute
 
+from django.shortcuts import render
+from .models import Product, Category, RoofingSheetAttribute, TileAttribute, ProductGauge
+
 def products(request):
     categories = Category.objects.all()
     products = Product.objects.all()
 
-    # Handle filtering
+    # Filtering
     category_id = request.GET.get('category')
     color = request.GET.get('color')
-    gauge = request.GET.get('gauge')
     profile = request.GET.get('profile')
+    gauge = request.GET.get('gauge')
 
+    # Filter by category
     if category_id:
         products = products.filter(category_id=category_id)
         category = Category.objects.get(id=category_id)
 
-        # Define your categories exactly
-        roofing_categories = [
-            'ando mobile steel structures', 
-            'ando long', 
-            'ando eco'
-        ]
-        tile_categories = [
-            'zebra roofing tiles', 
-            'ando decorative wall coatings'
-        ]
-
-        # Apply attribute filterszz
-        if category.name.lower() in roofing_categories:
+        if category.name.lower() == "roofing sheet":
             if color:
                 products = products.filter(roofing_attributes__color=color)
-            if gauge:
-                products = products.filter(roofing_attributes__gauge=gauge)
             if profile:
                 products = products.filter(roofing_attributes__profile=profile)
+            if gauge:
+                products = products.filter(gauges__gauge=gauge)
 
-        elif category.name.lower() in tile_categories:
+            colors = RoofingSheetAttribute.objects.filter(product__category=category).values_list('color', flat=True).distinct()
+            profiles = RoofingSheetAttribute.objects.filter(product__category=category).values_list('profile', flat=True).distinct()
+            gauges = ProductGauge.objects.filter(product__category=category).values_list('gauge', flat=True).distinct()
+
+        elif category.name.lower() == "tiles":
             if color:
                 products = products.filter(tile_attributes__color=color)
-            if gauge:
-                products = products.filter(tile_attributes__gauge=gauge)
             if profile:
                 products = products.filter(tile_attributes__profile=profile)
+
+            colors = TileAttribute.objects.filter(product__category=category).values_list('color', flat=True).distinct()
+            profiles = TileAttribute.objects.filter(product__category=category).values_list('profile', flat=True).distinct()
+            gauges = []  # Tiles don’t have gauges
+
+        else:
+            colors = []
+            profiles = []
+            gauges = []
+
+    else:
+        colors = []
+        profiles = []
+        gauges = []
+
+    # ✅ Calculate discount percentage for each product
+    for product in products:
+        if product.discount_price and product.selling_price:
+            product.discount_percentage = round(
+                (product.selling_price - product.discount_price) / product.selling_price * 100
+            )
+        else:
+            product.discount_percentage = 0
 
     context = {
         'categories': categories,
         'products': products,
+        'colors': colors,
+        'profiles': profiles,
+        'gauges': gauges,
     }
     return render(request, 'user/products.html', context)
+
 
 
 def get_attributes(request):
@@ -146,16 +167,122 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Product, Category
 
+from django.shortcuts import render, get_object_or_404
+from .models import Product, Category
+
+from django.shortcuts import render, get_object_or_404
+from .models import Product, Category, RoofingSheetAttribute, TileAttribute, ProductGauge
+
 def category(request, pk):
-    # Use get_object_or_404 with name instead of pk
+    # get the category (you use name in URL)
     category_obj = get_object_or_404(Category, name=pk)
-    
-    products = Product.objects.filter(category=category_obj)
-    
+
+    # all categories for sidebar (template expects this)
+    categories = Category.objects.all()
+
+    # base queryset: products belonging to this category
+    products_qs = Product.objects.filter(category=category_obj)
+
+    # define which category names should be treated as roofing / tiles
+    roofing_categories = { 'ando mobile steel structures', 'ando long', 'ando eco', 'roofing sheet' }
+    tile_categories = { 'zebra roofing tiles', 'ando decorative wall coatings', 'tiles' }
+
+    # normalize name for matching
+    cat_name = (category_obj.name or '').strip().lower()
+
+    # defaults
+    colors = []
+    profiles = []
+    gauges = []
+
+    # If roofing category -> gather attributes from RoofingSheetAttribute and ProductGauge
+    if cat_name in roofing_categories:
+        # attributes come from the related models
+        colors = list(
+            RoofingSheetAttribute.objects
+            .filter(product__category=category_obj)
+            .values_list('color', flat=True)
+            .distinct()
+        )
+        profiles = list(
+            RoofingSheetAttribute.objects
+            .filter(product__category=category_obj)
+            .values_list('profile', flat=True)
+            .distinct()
+        )
+        gauges = list(
+            ProductGauge.objects
+            .filter(product__category=category_obj)
+            .values_list('gauge', flat=True)
+            .distinct()
+        )
+
+        # apply querystring filters (use related lookups)
+        color_filter = request.GET.get('color')
+        profile_filter = request.GET.get('profile')
+        gauge_filter = request.GET.get('gauge')
+
+        if color_filter:
+            products_qs = products_qs.filter(roofing_attributes__color=color_filter)
+        if profile_filter:
+            products_qs = products_qs.filter(roofing_attributes__profile=profile_filter)
+        if gauge_filter:
+            products_qs = products_qs.filter(gauges__gauge=gauge_filter)
+
+    # If tile category -> gather attributes from TileAttribute
+    elif cat_name in tile_categories:
+        colors = list(
+            TileAttribute.objects
+            .filter(product__category=category_obj)
+            .values_list('color', flat=True)
+            .distinct()
+        )
+        profiles = list(
+            TileAttribute.objects
+            .filter(product__category=category_obj)
+            .values_list('profile', flat=True)
+            .distinct()
+        )
+        gauges = []  # tiles typically have no gauges in your models
+
+        # apply querystring filters using tile_attributes lookups
+        color_filter = request.GET.get('color')
+        profile_filter = request.GET.get('profile')
+
+        if color_filter:
+            products_qs = products_qs.filter(tile_attributes__color=color_filter)
+        if profile_filter:
+            products_qs = products_qs.filter(tile_attributes__profile=profile_filter)
+
+    else:
+        # For other categories (e.g., steel, accessories...) try to support steel attributes if present
+        # If you have MobileSteelAttribute (steel_attributes) we can add logic here.
+        # For now, no attribute filters:
+        colors = []
+        profiles = []
+        gauges = []
+
+    # Recompute products list after filters
+    products = products_qs.select_related('category').prefetch_related('gauges', 'roofing_attributes', 'tile_attributes')
+
+    # Add discount_percentage attribute for template (so template arithmetic is avoided)
+    for p in products:
+        try:
+            sp = float(p.selling_price or 0)
+            dp = float(p.discount_price or 0)
+            if sp and dp and sp > dp:
+                p.discount_percentage = round((sp - dp) / sp * 100)
+            else:
+                p.discount_percentage = 0
+        except Exception:
+            p.discount_percentage = 0
+
     context = {
         'products': products,
         'category_name': category_obj.name,
+        'categories': categories,
+        'colors': colors,
+        'profiles': profiles,
+        'gauges': gauges,
     }
     return render(request, 'user/category.html', context)
-
-

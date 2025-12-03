@@ -1,0 +1,64 @@
+<div class="container-fluid nav-bar p-0" style="background-color: #fdc60d;">
+    <div class="row gx-0 px-5 align-items-center"> <!-- Removed bg-primary -->
+        <div class="col-lg-3 d-none d-lg-block">
+            <nav class="navbar navbar-light position-relative" style="width: 250px;">
+                <button class="navbar-toggler border-0 fs-4 w-100 px-0 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#allCat">
+                    <h4 class="m-0"><i class="fa fa-bars me-2"></i>All Categories</h4>
+                </button>
+                <div class="collapse navbar-collapse rounded-bottom" id="allCat">
+                    <div class="navbar-nav ms-auto py-0">
+                        <ul class="list-unstyled categories-bars">
+                            <li><div class="categories-bars-item"><a href="{% url 'category' 'Ando Eco' %}">Ando Eco</a></div></li>
+                                    <li><div class="categories-bars-item"><a href="{% url 'category' 'Ando Long' %}">Ando Long</a></div></li>
+                                    <li><div class="categories-bars-item"><a href="{% url 'category' 'Zebra Roofing tiles' %}">Zebra Tiles</a></div></li>
+                                    <li><div class="categories-bars-item"><a href="{% url 'category' 'Ando Decorative wall coatings' %}">Ando Decorative wall coatings</a></div></li>
+                                    <li><div class="categories-bars-item"><a href="{% url 'category' 'Ando Mobile Steel Structures' %}">Ando Mobile Steel Structures</a></div></li>
+                                    <li><div class="categories-bars-item"><a href="{% url 'category' 'Accessories' %}">Accessories</a></div></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="col-12 col-lg-9">
+            <nav class="navbar navbar-expand-lg navbar-light"> <!-- Removed bg-primary -->
+                <a href="" class="navbar-brand d-block d-lg-none">
+                    <h1 class="display-5 text-secondary m-0"><i class="fas fa-shopping-bag text-white me-2"></i></h1>
+                </a>
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars fa-1x"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto py-0">
+                        <a href="{%url 'home-index' %}" class="nav-item nav-link active">Home</a>
+                        <a href="{%url 'product-lists' %}" class="nav-item nav-link">Shop Now</a>
+                        <a href="{%url 'blog_list' %}" class="nav-item nav-link">Blogs</a>
+                        <a href="{%url 'submit_inquiry' %}" class="nav-item nav-link">Inquries</a>
+ 
+                        <div class="nav-item dropdown d-block d-lg-none mb-3">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">All Category</a>
+                            <div class="dropdown-menu m-0">
+                                <ul class="list-unstyled categories-bars">
+                                    <li><div class="categories-bars-item"><a href="{% url 'category' 'Ando Eco' %}">Ando Eco</a></div></li>
+                                    <li><div class="categories-bars-item"><a href="{% url 'category' 'Ando Long' %}">Ando Long</a></div></li>
+                                    <li><div class="categories-bars-item"><a href="{% url 'category' 'Zebra Roofing tiles' %}">Zebra Tiles</a></div></li>
+                                    <li><div class="categories-bars-item"><a href="{% url 'category' 'Ando Decorative wall coatings' %}">Ando Decorative wall coatings</a></div></li>
+                                    <li><div class="categories-bars-item"><a href="{% url 'category' 'Ando Mobile Steel Structures' %}">Ando Mobile Steel Structures</a></div></li>
+                                    <li><div class="categories-bars-item"><a href="{% url 'category' 'Accessories' %}">Accessories</a></div></li>
+                               </ul>
+                            </div>
+                        </div>
+                    </div>
+                   {% if not user.is_authenticated %}
+            <a href="{% url 'login' %}" 
+            class="btn btn-secondary rounded-pill py-2 px-4 px-lg-3 mb-3 mb-md-3 mb-lg-0"
+            style="background-color: #174376 !important; border-color: #174376 !important; color: white !important;">
+                <i class="fa fa-mobile-alt me-2"></i>Login/Register
+            </a>
+            {% endif %}
+
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>

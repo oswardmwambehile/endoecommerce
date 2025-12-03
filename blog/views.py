@@ -71,3 +71,6 @@ def submit_inquiry(request):
     
     return render(request, 'user/inquiry_form.html', {'form': form})
 
+
+def dashboard(request):
+    return render(request, 'admin/index.html')

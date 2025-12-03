@@ -125,7 +125,7 @@ def login_user(request):
             if user.user_type == 'admin':
                 return redirect('dashboard')  # admin page
             elif user.user_type == 'customer':
-                return redirect('index')  # customer page
+                return redirect('home-index')  # customer page
             else:
                 return redirect('profile')  # fallback if user_type missing
         else:
@@ -138,7 +138,7 @@ def login_user(request):
 def logout_user(request):
     if request.user.is_authenticated:
         logout(request)
-        return redirect('index')
+        return redirect('home-index')
     else:
         messages.error(request,'You must login first to access the page')
         return redirect('login')

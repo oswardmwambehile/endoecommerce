@@ -1,93 +1,120 @@
-{% extends "user/base.html" %}
+{% extends "admin/base.html" %}
 {% load static %}
 {% load humanize %}
 
+
+
+
 {% block content %}
-{% include 'user/nav.html' %}
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
 
-<hr style="border: 1px dotted #174376;">
 
+        <!-- Topbar Start -->
+        {% include 'admin/topnav.html' %}
+        <!-- Topbar End -->
+
+        <!-- Navbar & Hero Start -->
+        {% include 'admin/nav.html' %}
+        <!-- Navbar & Hero End -->
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="card mb-4 shadow-sm">
-                <div class="row no-gutters">
+            <div class="card mb-4 shadow-sm p-3">
+                <div class="row">
 
                     {% if product.product_image %}
-                    <div class="col-md-6">
-                        <img src="{{ product.product_image.url }}"
-                             class="img-fluid h-100"
-                             style="object-fit: cover; border-radius: 6px;">
+                    <div class="col-md-6 text-center">
+                        <img src="{{ product.product_image.url }}" 
+                             class="img-fluid" 
+                             style="max-height: 500px; object-fit: contain; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                     </div>
                     {% endif %}
 
                     <div class="col-md-6">
                         <div class="card-body">
-                            <h2 class="card-title mb-3">{{ product.name|title }}</h2>
+                            <h2 class="card-title mb-2">{{ product.name|title }}</h2>
                             <p class="text-muted small">{{ product.category.name }}</p>
-                            <p>{{ product.description }}</p>
-                            <p>{{ product.selling_price }} TZS/==</p>
+
+                            <!-- Ratings / fake stars for Amazon style -->
+                            <div class="mb-3">
+                                <span style="color:#FF9900; font-size:1rem;">
+                                    ★★★★☆
+                                </span>
+                                <span class="text-muted">({{ product.reviews.count }} reviews)</span>
+                            </div>
+
+                            <p class="mb-3">{{ product.description }}</p>
+
+                            <h3 class="text-danger mb-3" style="font-weight:700;">
+                                {{ product.selling_price|intcomma }} TZS
+                            </h3>
 
                             <form method="post" action="{% url 'add_to_cart' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="product_id" value="{{ product.id }}">
 
                                 {% if product.roofing_attributes or product.tile_attributes %}
-                                    <h5 class="mt-4">Specifications</h5>
+                                <h5 class="mt-4 mb-2">Specifications</h5>
 
-                                    <!-- COLOR -->
-                                    <label>Color:</label>
-                                    <select name="color" class="form-control mb-2" required>
-                                        <option value="">-- Select Color --</option>
-                                        {% if product.roofing_attributes %}
-                                            {% for value, label in product.roofing_attributes.color_choices %}
-                                                <option value="{{ value }}" {% if product.roofing_attributes.color == value %}selected{% endif %}>{{ label }}</option>
-                                            {% endfor %}
-                                        {% elif product.tile_attributes %}
-                                            {% for value, label in product.tile_attributes.color_choices %}
-                                                <option value="{{ value }}" {% if product.tile_attributes.color == value %}selected{% endif %}>{{ label }}</option>
-                                            {% endfor %}
-                                        {% endif %}
-                                    </select>
-
-                                    <!-- PROFILE -->
-                                    <label>Profile:</label>
-                                    <select name="profile" class="form-control mb-2" required>
-                                        <option value="">-- Select Profile --</option>
-                                        {% if product.roofing_attributes %}
-                                            {% for value, label in product.roofing_attributes.profile_choices %}
-                                                <option value="{{ value }}" {% if product.roofing_attributes.profile == value %}selected{% endif %}>{{ label }}</option>
-                                            {% endfor %}
-                                        {% elif product.tile_attributes %}
-                                            {% for value, label in product.tile_attributes.profile_choices %}
-                                                <option value="{{ value }}" {% if product.tile_attributes.profile == value %}selected{% endif %}>{{ label }}</option>
-                                            {% endfor %}
-                                        {% endif %}
-                                    </select>
-
-                                    <!-- GAUGE -->
-                                    {% if product.gauges.all %}
-                                        <label>Gauge:</label>
-                                        <select name="gauge" id="gauge-select" class="form-control mb-2" required>
-                                            <option value="">-- Select Gauge --</option>
-                                            {% for gauge in product.gauges.all %}
-                                                <option value="{{ gauge.id }}" data-price="{{ gauge.price_per_meter }}"
-                                                    {% if product.gauge_id|stringformat:"s" == gauge.id|stringformat:"s" %}selected{% endif %}>
-                                                    {{ gauge.gauge }} ({{ gauge.price_per_meter|intcomma }} TZS)
-                                                </option>
-                                            {% endfor %}
-                                        </select>
+                                <!-- COLOR -->
+                                <label>Color:</label>
+                                <select name="color" class="form-control mb-2" required>
+                                    <option value="">-- Select Color --</option>
+                                    {% if product.roofing_attributes %}
+                                        {% for value, label in product.roofing_attributes.color_choices %}
+                                            <option value="{{ value }}" {% if product.roofing_attributes.color == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    {% elif product.tile_attributes %}
+                                        {% for value, label in product.tile_attributes.color_choices %}
+                                            <option value="{{ value }}" {% if product.tile_attributes.color == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
                                     {% endif %}
+                                </select>
 
-                                    <label>Roofing Length (m):</label>
-                                    <input type="number" name="length"
-                                           class="form-control mb-2"
-                                           placeholder="Enter length"
-                                           min="0.1" step="0.1" required>
+                                <!-- PROFILE -->
+                                <label>Profile:</label>
+                                <select name="profile" class="form-control mb-2" required>
+                                    <option value="">-- Select Profile --</option>
+                                    {% if product.roofing_attributes %}
+                                        {% for value, label in product.roofing_attributes.profile_choices %}
+                                            <option value="{{ value }}" {% if product.roofing_attributes.profile == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    {% elif product.tile_attributes %}
+                                        {% for value, label in product.tile_attributes.profile_choices %}
+                                            <option value="{{ value }}" {% if product.tile_attributes.profile == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+
+                                <!-- GAUGE -->
+                                {% if product.gauges.all %}
+                                    <label>Gauge:</label>
+                                    <select name="gauge" id="gauge-select" class="form-control mb-2" required>
+                                        <option value="">-- Select Gauge --</option>
+                                        {% for gauge in product.gauges.all %}
+                                            <option value="{{ gauge.id }}" data-price="{{ gauge.price_per_meter }}"
+                                                {% if product.gauge_id|stringformat:"s" == gauge.id|stringformat:"s" %}selected{% endif %}>
+                                                {{ gauge.gauge }} ({{ gauge.price_per_meter|intcomma }} TZS)
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                {% endif %}
+
+                                <label>Roofing Length (m):</label>
+                                <input type="number" name="length"
+                                       class="form-control mb-2"
+                                       placeholder="Enter length"
+                                       min="0.1" step="0.1" required>
                                 {% endif %}
 
                                 {% if product.steel_attributes %}
-                                    <h5 class="mt-4">Steel Specifications</h5>
+                                    <h5 class="mt-4 mb-2">Steel Specifications</h5>
 
                                     <label>Length (m):</label>
                                     <input type="number" name="length" class="form-control mb-2"
@@ -103,7 +130,7 @@
                                 {% endif %}
 
                                 {% if not product.roofing_attributes and not product.tile_attributes and not product.steel_attributes %}
-                                    <h5 class="mt-4">Product Details</h5>
+                                    <h5 class="mt-4 mb-2">Product Details</h5>
                                     <p class="text-muted">Price: {{ product.selling_price|intcomma }} TZS</p>
                                 {% endif %}
 
@@ -111,7 +138,7 @@
                                 <input type="number" name="quantity" value="1" min="1"
                                        class="form-control mb-3" required>
 
-                                <button type="submit" class="btn btn-primary w-100 py-2">
+                                <button type="submit" class="btn btn-warning w-100 py-2" style="font-weight:600;">
                                     <i class="bi bi-cart-fill"></i> Add to Cart
                                 </button>
                             </form>
@@ -152,63 +179,71 @@ body { font-family: "Poppins", sans-serif; color: #222; line-height: 1.7; }
 h2, h5 { font-weight: 600; color: #174376; }
 .card-title { font-size: 1.8rem; font-weight: 700; }
 h5.mt-4 { border-left: 4px solid #ff9900; padding-left: 10px; font-weight: 600; }
-.btn-primary { background-color: #ff9900; border-color: #ff9900; font-weight: 500; border-radius: 8px; }
-.btn-primary:hover { background-color: #e68a00; border-color: #e68a00; }
+.btn-warning { background-color: #FF9900; border-color: #FF9900; font-weight: 600; border-radius: 6px; }
+.btn-warning:hover { background-color: #e68a00; border-color: #e68a00; }
+.price-section { font-size: 1.2rem; color: #B12704; font-weight: 700; }
+.card-body p { font-size: 1rem; }
+.card-body select, .card-body input { border-radius: 4px; }
 </style>
 
-<hr class="mt-5" style="border: 2px dotted #174376;">
 
-<fieldset style="
-    border: 3px solid #174376;
-    padding: 25px;
-    border-radius: 10px;
-    margin-top: 20px;
-    overflow: visible !important;
-">
-    <legend style="
-        font-weight: 700;
-        color: #174376;
-        font-size: 1.2rem;
-        padding: 0 10px;
-        background: #fff;
-    ">
-        Explore More Our Products Accessories Here
-    </legend>
-    <marquee behavior="" direction="">
-        <h3 class="text-center mb-4" style="font-weight:700; color:#174376;">
-            Accessories Products
-        </h3>
-    </marquee>
 
-    <div class="container mb-5" style="padding-left: 10px; padding-right: 10px;">
-        <div class="row">
-            {% for item in accessories_products %}
-            <div class="col-md-3 mb-4">
-                <div class="card shadow-sm" style="border-radius: 12px; overflow: hidden; height: 100%;">
-                    {% if item.product_image %}
-                    <img src="{{ item.product_image.url }}" class="card-img-top" style="height: 180px; object-fit: cover;">
-                    {% endif %}
-                    <div class="card-body d-flex flex-column">
-                        <h6 class="card-title mb-2" style="font-weight:600; color:#174376; font-size: 1.1rem;">
-                            {{ item.name|title }}
-                        </h6>
-                        <p class="text-muted" style="font-size: 0.9rem; height: 50px; overflow: hidden;">
-                            {{ item.description|truncatewords:15 }}
-                        </p>
-                        <p class="mb-3" style="font-weight:600; font-size: 1rem;">
-                            {{ item.selling_price|intcomma }} TZS/==
-                        </p>
-                        <a href="{% url 'product_detail' item.id %}" class="btn btn-outline-primary mt-auto" style="border-radius: 6px; padding: 6px 12px; font-size: 0.9rem; background-color: #174376; color: white;">
-                            View Details
-                        </a>
+<!-- Accessories Section -->
+<div class="col-lg-12 wow fadeInUp mx-auto" style="max-width:1200px;" data-wow-delay="0.1s">
+    <h3 class="mb-4" style="font-weight:700; color:#174376;">Explore More Our Products Accessories Here</h3>
+    <div class="row g-4 product">
+        {% for item in accessories_products %}
+        <div class="col-lg-3 col-md-6">
+            <div class="product-item rounded wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                <div class="product-item-inner border rounded">
+                    <div class="product-item-inner-item position-relative">
+                        {% if item.product_image %}
+                        <img src="{{ item.product_image.url }}" class="img-fluid w-100 rounded-top" alt="{{ item.name }}">
+                        {% endif %}
+                        <div class="product-details">
+                            <a href="{% url 'product_detail' item.id %}"><i class="fa fa-eye fa-1x"></i></a>
+                        </div>
+                    </div>
+                    <div class="text-center rounded-bottom p-4">
+                        <a href="#" class="d-block mb-2">{{ item.category.name }}</a>
+                        <a href="{% url 'product_detail' item.id %}" class="d-block h5">{{ item.name|title }}</a>
+                        {% if item.discount_price %}
+                        <del class="me-2 fs-6">TZS {{ item.selling_price|intcomma }}</del>
+                        <span class="text-primary fs-6">TZS {{ item.discount_price|intcomma }}</span>
+                        {% else %}
+                        <span class="text-primary fs-6">TZS {{ item.selling_price|intcomma }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="product-item-add border border-top-0 rounded-bottom text-center p-4 pt-0">
+                    <a href="{% url 'product_detail' item.id %}" class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-3">
+                        <i class="fa fa-eye fa-1x"></i> View Product
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex">
+                            {% for i in "12345" %}
+                                <i class="fas fa-star{% if forloop.counter > item.rating|default:5 %}-o{% endif %} text-primary"></i>
+                            {% endfor %}
+                        </div>
+                        <div class="d-flex">
+                            <a href="#" class="text-primary d-flex align-items-center justify-content-center me-3">
+                                <span class="rounded-circle btn-sm-square border"><i class="fas fa-random"></i></span>
+                            </a>
+                            <a href="#" class="text-primary d-flex align-items-center justify-content-center me-0">
+                                <span class="rounded-circle btn-sm-square border"><i class="fas fa-heart"></i></span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            {% empty %}
-            <p class="text-center w-100 text-muted">No accessories available.</p>
-            {% endfor %}
         </div>
+        {% empty %}
+        <p class="text-center w-100 text-muted">No accessories available.</p>
+        {% endfor %}
     </div>
-</fieldset>
+</div>
+<br><br><br><br><br>
+
+
 
 {% endblock %}

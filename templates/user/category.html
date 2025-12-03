@@ -1,169 +1,233 @@
-{% extends 'user/base.html' %}
+{% extends "admin/base.html" %}
 {% load static %}
-{% load humanize %}
 
 {% block content %}
-{% include 'user/nav.html' %}
 
-<!-- Inner Page Section -->
-<section class="inner_page_head" style="background-color: #174376;">
-   <div class="container_fuild">
-      <div class="row">
-         <div class="col-md-12">
-            <div class="full text-center">
-               {% if category_name %}
-                   <h3>Products in "{{ category_name }}"</h3>
-                   <p>Explore high-quality products in the {{ category_name }} category.</p>
-               {% else %}
-                   <h3>Discover Our Amazing Products</h3>
-                   <p>Quality products designed to meet your needs. Browse, shop, and enjoy!</p>
-               {% endif %}
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<!-- Spinner End -->
+
+{% include 'admin/topnav.html' %}
+{% include 'admin/nav.html' %}
+
+<!-- Products Offer Start -->
+<div class="container-fluid bg-light py-5">
+    <div class="container">
+        <div class="row g-4">
+            {% for product in products|slice:":2" %}
+            <div class="col-lg-6 wow fadeIn{{ forloop.first|yesno:"Left,Right" }}" data-wow-delay="0.{{ forloop.counter }}s">
+                <a href="{% url 'product_detail' product.id %}" class="border bg-white rounded p-4 d-block">
+                    <div class="row align-items-center">
+                        <!-- Text Section -->
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <p class="text-muted mb-2">Find The Best {{ product.category.name }} for You!</p>
+                            <h3 class="text-primary">{{ product.name }}</h3>
+                            {% if product.discount_price %}
+                            <h1 class="display-4 text-secondary mb-0">
+                                0.2% <span class="text-primary fw-normal">Off</span>
+                            </h1>
+                            {% endif %}
+                        </div>
+                        <!-- Image Section -->
+                        <div class="col-md-6 text-center">
+                            <img src="{{ product.product_image.url }}" class="img-fluid rounded" alt="{{ product.name }}" style="max-height:200px; object-fit:contain;">
+                        </div>
+                    </div>
+                </a>
             </div>
-         </div>
-      </div>
-   </div>
-</section>
-<!-- End Inner Page Section -->
-<div class="container mt-5">
-{% if products %}
-    <div class="row">
-        {% for product in products %}
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4" data-aos="fade-up" data-aos-duration="1500">
-            <div class="card h-100 shadow-sm">
-                <img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.name }}">
-                <div class="card-body text-center">
-                    <h5 class="card-title">{{ product.name|title }}</h5>
-                    <p class="card-description">{{ product.description|truncatewords:6 }}</p>
-                    <p class="card-text"><strong>{{ product.selling_price|intcomma }} TZS/==</strong></p>
-                    <div class="mt-4">
-                        <a href="{% url 'product_detail' product.id %}" class="btn btn-primary btn-lg w-100" style="background-color: #174376;">View Product</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- Products Offer End -->
+
+
+<!-- Shop Page Start -->
+<div class="container-fluid shop py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
+                <!-- Categories -->
+                <div class="product-categories mb-4">
+                    <h4>Products Categories</h4>
+                    <ul class="list-unstyled">
+                        {% for category in categories %}
+                        <li>
+                            <div class="categories-item">
+                                <a href="?category={{ category.id }}" class="text-dark">
+                                    <i class="fas fa-apple-alt text-secondary me-2"></i>{{ category.name }}
+                                </a>
+                                <span>({{ category.products.count }})</span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Price Filter -->
+                <div class="price mb-4">
+                    <h4 class="mb-2">Price</h4>
+                    <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="500" value="0" oninput="amount.value=rangeInput.value">
+                    <output id="amount" name="amount" min="0" max="500" for="rangeInput">0</output>
+                </div>
+
+                <!-- Color Filter -->
+                {% if colors %}
+                <div class="product-color mb-3">
+                    <h4>Select By Color</h4>
+                    <ul class="list-unstyled">
+                        {% for color in colors %}
+                        <li>
+                            <div class="product-color-item">
+                                <a href="?color={{ color }}" class="text-dark">{{ color }}</a>
+                                <span>({{ products|length }})</span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Profile Filter -->
+                {% if profiles %}
+                <div class="product-profile mb-3">
+                    <h4>Select By Profile</h4>
+                    <ul class="list-unstyled">
+                        {% for profile in profiles %}
+                        <li>
+                            <div class="product-profile-item">
+                                <a href="?profile={{ profile }}" class="text-dark">{{ profile }}</a>
+                                <span>({{ products|length }})</span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Gauge Filter -->
+                {% if gauges %}
+                <div class="product-gauge mb-3">
+                    <h4>Select By Gauge</h4>
+                    <ul class="list-unstyled">
+                        {% for gauge in gauges %}
+                        <li>
+                            <div class="product-gauge-item">
+                                <a href="?gauge={{ gauge }}" class="text-dark">{{ gauge }}</a>
+                                <span>({{ products|length }})</span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Featured products -->
+                <div class="featured-product mb-4">
+                    <h4 class="mb-3">Featured products</h4>
+                    {% for product in products|slice:":3" %}
+                    <div class="featured-product-item">
+                        <div class="rounded me-4" style="width: 100px; height: 100px;">
+                            <img src="{{ product.product_image.url }}" class="img-fluid rounded" alt="{{ product.name }}">
+                        </div>
+                        <div>
+                            <h6 class="mb-2">{{ product.name }}</h6>
+                            <div class="d-flex mb-2">
+                                {% for i in "12345" %}
+                                    <i class="fa fa-star{% if forloop.counter > product.rating|default:5 %}-o{% endif %} text-secondary"></i>
+                                {% endfor %}
+                            </div>
+                            <div class="d-flex mb-2">
+                                {% if product.discount_price %}
+                                <h5 class="text-danger text-decoration-line-through me-2">TZS{{ product.selling_price }}</h5>
+                                <h5 class="fw-bold">TZS {{ product.discount_price }}</h5>
+                                {% else %}
+                                <h5 class="fw-bold">TZS {{ product.selling_price }}</h5>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="d-flex justify-content-center my-4">
+                        <a href="#" class="btn btn-primary px-4 py-3 rounded-pill w-100">View More</a>
                     </div>
                 </div>
             </div>
+
+            <!-- Products Grid -->
+            <div class="col-lg-9 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="row g-4 product">
+                    {% for product in products %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product-item rounded wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                            <div class="product-item-inner border rounded">
+                                <div class="product-item-inner-item position-relative">
+                                    <img src="{{ product.product_image.url }}" class="img-fluid w-100 rounded-top" alt="{{ product.name }}">
+                                    {% if product.is_new %}
+                                    <div class="product-new">New</div>
+                                    {% endif %}
+                                    <div class="product-details">
+                                        <a href="{% url 'product_detail' product.id %}"><i class="fa fa-eye fa-1x"></i></a>
+                                    </div>
+                                </div>
+                                <div class="text-center rounded-bottom p-4">
+                                    <a href="#" class="d-block mb-2">{{ product.category.name }}</a>
+                                    <a href="{% url 'product_detail' product.id %}" class="d-block h4">{{ product.name }}</a>
+                                    {% if product.discount_price %}
+                                    <del class="me-2 fs-5">TZS {{ product.selling_price }}</del>
+                                    <span class="text-primary fs-5">TZS {{ product.discount_price }}</span>
+                                    {% else %}
+                                    <span class="text-primary fs-5">TZS {{ product.selling_price }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="product-item-add border border-top-0 rounded-bottom text-center p-4 pt-0">
+                                <a href="{% url 'product_detail' product.id %}" class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4">
+                                    <i class="fa fa-eye fa-1x"></i> View Product
+                                </a>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex">
+                                        {% for i in "12345" %}
+                                            <i class="fas fa-star{% if forloop.counter > product.rating|default:5 %}-o{% endif %} text-primary"></i>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="d-flex">
+                                        <a href="#" class="text-primary d-flex align-items-center justify-content-center me-3">
+                                            <span class="rounded-circle btn-sm-square border"><i class="fas fa-random"></i></span>
+                                        </a>
+                                        <a href="#" class="text-primary d-flex align-items-center justify-content-center me-0">
+                                            <span class="rounded-circle btn-sm-square border"><i class="fas fa-heart"></i></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-center">No products found.</p>
+                    {% endfor %}
+
+                    <!-- Pagination -->
+                    <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="pagination d-flex justify-content-center mt-5">
+                            <a href="#" class="rounded">&laquo;</a>
+                            <a href="#" class="active rounded">1</a>
+                            <a href="#" class="rounded">2</a>
+                            <a href="#" class="rounded">3</a>
+                            <a href="#" class="rounded">&raquo;</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
-        {% endfor %}
     </div>
-    {% else %}
-    <div class="alert alert-info text-center">
-        No products available.
-    </div>
-    {% endif %}
 </div>
-
-<!-- STYLES -->
-<style>
-/* Page Title */
-.inner_page_head h3 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    font-size: 2rem;
-    color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-}
-.inner_page_head p {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    color: #f0f0f0;
-    line-height: 1.6;
-}
-
-/* Filter form styling */
-select.form-control {
-    border-radius: 8px;
-    border: 1px solid #174376;
-    font-family: 'Roboto', sans-serif;
-}
-
-/* Button enhancements */
-.btn-primary, .btn-secondary {
-    border: none;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    padding: 12px 28px;
-    font-size: 1rem;
-}
-.btn-primary {
-    background-color: #174376;
-}
-.btn-primary:hover {
-    background-color: #0f305d;
-    transform: translateY(-2px);
-}
-.btn-secondary:hover {
-    background-color: #555;
-    transform: translateY(-2px);
-}
-
-/* Product Cards */
-.card {
-    border: none;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    min-height: 420px; /* ensures uniform card height */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-.card-img-top {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    transition: transform 0.4s ease;
-    height: 200px;
-    object-fit: cover;
-}
-.card:hover .card-img-top {
-    transform: scale(1.08);
-}
-.card-body {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-.card-title {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 1.2rem;
-    color: #174376;
-    margin-bottom: 10px;
-}
-.card-description {
-    font-family: 'Roboto', sans-serif;
-    font-size: 0.95rem;
-    color: #555;
-    line-height: 1.5;
-    flex-grow: 1; /* keeps description area flexible */
-    margin-bottom: 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.card-text {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    color: #000;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-/* Button at bottom of card */
-.card .btn {
-    align-self: center;
-}
-
-/* Empty state */
-.alert-info {
-    border-left: 5px solid #174376;
-    background: #f8f9fa;
-}
-</style>
-
+<!-- Shop Page End -->
 
 {% endblock %}
