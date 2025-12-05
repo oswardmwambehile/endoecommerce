@@ -1,211 +1,92 @@
 {% extends "admin/base.html" %}
-{% load static %}
+
 
 {% block content %}
-
-<!-- Spinner Start -->
-<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-</div>
-<!-- Spinner End -->
-
-{% include 'admin/topnav.html' %}
-{% include 'admin/nav.html' %}
-
-<!-- Products Offer Start -->
-<div class="container-fluid bg-light py-5">
-    <div class="container">
-        <div class="row g-4">
-            {% for product in products|slice:":2" %}
-            <div class="col-lg-6 wow fadeIn{{ forloop.first|yesno:"Left,Right" }}" data-wow-delay="0.{{ forloop.counter }}s">
-                <a href="{% url 'product_detail' product.id %}" class="border bg-white rounded p-4 d-block">
-                    <div class="row align-items-center">
-                        <!-- Text Section -->
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <p class="text-muted mb-2">Find The Best {{ product.category.name }} for You!</p>
-                            <h3 class="text-primary">{{ product.name }}</h3>
-                            {% if product.discount_price %}
-                            <h1 class="display-4 text-secondary mb-0">
-                                0.2% <span class="text-primary fw-normal">Off</span>
-                            </h1>
-                            {% endif %}
-                        </div>
-                        <!-- Image Section -->
-                        <div class="col-md-6 text-center">
-                            <img src="{{ product.product_image.url }}" class="img-fluid rounded" alt="{{ product.name }}" style="max-height:200px; object-fit:contain;">
-                        </div>
-                    </div>
-                </a>
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
             </div>
-            {% endfor %}
         </div>
-    </div>
-</div>
-<!-- Products Offer End -->
+        <!-- Spinner End -->
 
 
-<!-- Shop Page Start -->
+        <!-- Topbar Start -->
+        {% include 'admin/topnav.html' %}
+        <!-- Topbar End -->
+
+        <!-- Navbar & Hero Start -->
+        {% include 'admin/nav.html' %}
+        <!-- Navbar & Hero End -->
+
+
+
+<!-- Shop Page -->
 <div class="container-fluid shop py-5">
     <div class="container py-5">
         <div class="row g-4">
-            <!-- Sidebar Filters -->
+
+            <!-- Sidebar -->
             <div class="col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
                 <!-- Categories -->
-                <div class="product-categories mb-4">
-                    <h4>Products Categories</h4>
+                <div class="mb-4">
+                    <h4>Product Categories</h4>
                     <ul class="list-unstyled">
                         {% for category in categories %}
                         <li>
-                            <div class="categories-item">
-                                <a href="?category={{ category.id }}" class="text-dark">
-                                    <i class="fas fa-apple-alt text-secondary me-2"></i>{{ category.name }}
-                                </a>
-                                <span>({{ category.products.count }})</span>
-                            </div>
+                            <a href="?category={{ category.id }}" class="text-dark d-flex justify-content-between">
+                                {{ category.name }} <span>({{ category.products.count }})</span>
+                            </a>
                         </li>
                         {% endfor %}
                     </ul>
                 </div>
 
-                <!-- Price Filter -->
-                <div class="price mb-4">
-                    <h4 class="mb-2">Price</h4>
-                    <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="500" value="0" oninput="amount.value=rangeInput.value">
-                    <output id="amount" name="amount" min="0" max="500" for="rangeInput">0</output>
-                </div>
-
-                <!-- Color Filter -->
-                {% if colors %}
-                <div class="product-color mb-3">
-                    <h4>Select By Color</h4>
-                    <ul class="list-unstyled">
-                        {% for color in colors %}
-                        <li>
-                            <div class="product-color-item">
-                                <a href="?color={{ color }}" class="text-dark">{{ color }}</a>
-                                <span>({{ products|length }})</span>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-
-                <!-- Profile Filter -->
-                {% if profiles %}
-                <div class="product-profile mb-3">
-                    <h4>Select By Profile</h4>
-                    <ul class="list-unstyled">
-                        {% for profile in profiles %}
-                        <li>
-                            <div class="product-profile-item">
-                                <a href="?profile={{ profile }}" class="text-dark">{{ profile }}</a>
-                                <span>({{ products|length }})</span>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-
-                <!-- Gauge Filter -->
-                {% if gauges %}
-                <div class="product-gauge mb-3">
-                    <h4>Select By Gauge</h4>
-                    <ul class="list-unstyled">
-                        {% for gauge in gauges %}
-                        <li>
-                            <div class="product-gauge-item">
-                                <a href="?gauge={{ gauge }}" class="text-dark">{{ gauge }}</a>
-                                <span>({{ products|length }})</span>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-
-                <!-- Featured products -->
-                <div class="featured-product mb-4">
-                    <h4 class="mb-3">Featured products</h4>
+                <!-- Featured Products -->
+                <div class="mb-4">
+                    <h4>Featured Products</h4>
                     {% for product in products|slice:":3" %}
-                    <div class="featured-product-item">
-                        <div class="rounded me-4" style="width: 100px; height: 100px;">
-                            <img src="{{ product.product_image.url }}" class="img-fluid rounded" alt="{{ product.name }}">
-                        </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ product.product_image.url }}" alt="{{ product.name }}" class="rounded me-3" style="width:70px; height:70px; object-fit:cover;">
                         <div>
-                            <h6 class="mb-2">{{ product.name }}</h6>
-                            <div class="d-flex mb-2">
-                                {% for i in "12345" %}
-                                    <i class="fa fa-star{% if forloop.counter > product.rating|default:5 %}-o{% endif %} text-secondary"></i>
-                                {% endfor %}
-                            </div>
-                            <div class="d-flex mb-2">
-                                {% if product.discount_price %}
-                                <h5 class="text-danger text-decoration-line-through me-2">TZS{{ product.selling_price }}</h5>
-                                <h5 class="fw-bold">TZS {{ product.discount_price }}</h5>
-                                {% else %}
-                                <h5 class="fw-bold">TZS {{ product.selling_price }}</h5>
-                                {% endif %}
-                            </div>
+                            <h6 class="mb-1">{{ product.name }}</h6>
+                            <span class="text-primary fw-bold">
+                                {% if product.discount_price %} TZS {{ product.discount_price }} {% else %} TZS {{ product.selling_price }} {% endif %}
+                            </span>
                         </div>
                     </div>
                     {% endfor %}
-                    <div class="d-flex justify-content-center my-4">
-                        <a href="#" class="btn btn-primary px-4 py-3 rounded-pill w-100">View More</a>
-                    </div>
                 </div>
             </div>
 
             <!-- Products Grid -->
-            <div class="col-lg-9 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="row g-4 product">
+            <div class="col-lg-9">
+                <div class="row g-4">
                     {% for product in products %}
-                    <div class="col-lg-4 col-md-6">
-                        <div class="product-item rounded wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
-                            <div class="product-item-inner border rounded">
-                                <div class="product-item-inner-item position-relative">
-                                    <img src="{{ product.product_image.url }}" class="img-fluid w-100 rounded-top" alt="{{ product.name }}">
+                    <div class="col-md-6 col-lg-4 d-flex">
+                        <div class="product-card border rounded text-center p-3 wow fadeInUp flex-fill d-flex flex-column justify-content-between" data-wow-delay="0.{{ forloop.counter }}s">
+                            <div>
+                                <div class="position-relative mb-3">
+                                    <img src="{{ product.product_image.url }}" class="img-fluid rounded-top" alt="{{ product.name }}" style="max-height:200px; object-fit:contain;">
                                     {% if product.is_new %}
-                                    <div class="product-new">New</div>
-                                    {% endif %}
-                                    <div class="product-details">
-                                        <a href="{% url 'product_detail' product.id %}"><i class="fa fa-eye fa-1x"></i></a>
-                                    </div>
-                                </div>
-                                <div class="text-center rounded-bottom p-4">
-                                    <a href="#" class="d-block mb-2">{{ product.category.name }}</a>
-                                    <a href="{% url 'product_detail' product.id %}" class="d-block h4">{{ product.name }}</a>
-                                    {% if product.discount_price %}
-                                    <del class="me-2 fs-5">TZS {{ product.selling_price }}</del>
-                                    <span class="text-primary fs-5">TZS {{ product.discount_price }}</span>
-                                    {% else %}
-                                    <span class="text-primary fs-5">TZS {{ product.selling_price }}</span>
+                                    <span class="position-absolute top-0 start-0 bg-warning text-dark px-2 py-1 rounded">New</span>
                                     {% endif %}
                                 </div>
-                            </div>
-                            <div class="product-item-add border border-top-0 rounded-bottom text-center p-4 pt-0">
-                                <a href="{% url 'product_detail' product.id %}" class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4">
-                                    <i class="fa fa-eye fa-1x"></i> View Product
-                                </a>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex">
-                                        {% for i in "12345" %}
-                                            <i class="fas fa-star{% if forloop.counter > product.rating|default:5 %}-o{% endif %} text-primary"></i>
-                                        {% endfor %}
-                                    </div>
-                                    <div class="d-flex">
-                                        <a href="#" class="text-primary d-flex align-items-center justify-content-center me-3">
-                                            <span class="rounded-circle btn-sm-square border"><i class="fas fa-random"></i></span>
-                                        </a>
-                                        <a href="#" class="text-primary d-flex align-items-center justify-content-center me-0">
-                                            <span class="rounded-circle btn-sm-square border"><i class="fas fa-heart"></i></span>
-                                        </a>
-                                    </div>
+                                <h6 class="mb-1">{{ product.category.name }}</h6>
+                                <h5 class="mb-2">
+                                    <a href="{% url 'product_detail' product.id %}" class="text-dark text-decoration-none">{{ product.name }}</a>
+                                </h5>
+                                <div class="mb-3">
+                                    
+                                    
+                                    <span class="text-primary fw-bold">TZS {{ product.discount_price }}</span>
+                                   
+                                    
                                 </div>
                             </div>
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-warning w-100 mt-auto" style="background-color: #174376; color: white; border-color: white;">
+                                <i class="fas fa-eye me-2"></i> View Product
+                            </a>
                         </div>
                     </div>
                     {% empty %}
@@ -213,21 +94,95 @@
                     {% endfor %}
 
                     <!-- Pagination -->
-                    <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="pagination d-flex justify-content-center mt-5">
-                            <a href="#" class="rounded">&laquo;</a>
-                            <a href="#" class="active rounded">1</a>
-                            <a href="#" class="rounded">2</a>
-                            <a href="#" class="rounded">3</a>
-                            <a href="#" class="rounded">&raquo;</a>
+                    <div class="col-12 mt-4">
+                        <div class="d-flex justify-content-center">
+                            <a href="#" class="rounded px-3 py-2 border me-1">&laquo;</a>
+                            <a href="#" class="active rounded px-3 py-2 border me-1">1</a>
+                            <a href="#" class="rounded px-3 py-2 border me-1">2</a>
+                            <a href="#" class="rounded px-3 py-2 border">&raquo;</a>
                         </div>
                     </div>
-
                 </div>
             </div>
+
         </div>
     </div>
 </div>
-<!-- Shop Page End -->
+
+
+ <footer style="background-color: #174376; color: white; padding: 50px 0;">
+
+    <div class="container">
+        <div class="row">
+
+            <!-- Column 1 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: white; font-weight: 700;">Get to Know Us</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: white; text-decoration: none;">About Us</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Our Products</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Careers</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Blog</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: #174376; font-weight: 700;">Customer Service</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: white; text-decoration: none;">Contact Us</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Shipping</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Returns</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Help Center</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: #174376; font-weight: 700;">Connect With Us</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: white; text-decoration: none;">Facebook</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Instagram</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">WhatsApp</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: #174376; font-weight: 700;">Our Business</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: white; text-decoration: none;">Roofing Sheets</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Tiles</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Accessories</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Bulk Orders</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Line -->
+    <div class="text-center mt-4" style="border-top: 1px solid #e6b800; padding-top: 20px;">
+        <p style="color: white; font-size: 14px;">
+            © {{ year }} Ando Roofing Product Limited — All Rights Reserved.
+        </p>
+    </div>
+</footer>
+
+<style>
+/* Alibaba-style product card */
+.product-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+.btn-warning {
+    background-color: #fdc60d;
+    border-color: #fdc60d;
+    color: #000;
+}
+</style>
 
 {% endblock %}

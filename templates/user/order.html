@@ -1,11 +1,6 @@
-{% extends "admin/base.html" %}
+{{% extends "users/base.html" %}
+{% load static %}
 {% load humanize %}
-{% load static %}
-
-
-{% load static %}
-
-
 
 
 
@@ -21,11 +16,12 @@
 
 
         <!-- Topbar Start -->
-        {% include 'admin/topnav.html' %}
+        {% include 'users/topnav.html' %}
         <!-- Topbar End -->
 
         <!-- Navbar & Hero Start -->
-        {% include 'admin/nav.html' %}
+        {% include 'users/nav.html' %}
+
 
 <div class="container mt-5">
     <h2 style="

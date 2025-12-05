@@ -1,8 +1,7 @@
-{% extends "admin/base.html" %}
+{% extends "users/base.html" %}
 {% load static %}
+{% load humanize %}
 
-
-{% load static %}
 
 
 
@@ -17,34 +16,33 @@
 
 
         <!-- Topbar Start -->
-        {% include 'admin/topnav.html' %}
+        {% include 'users/topnav.html' %}
         <!-- Topbar End -->
 
         <!-- Navbar & Hero Start -->
-        {% include 'admin/nav.html' %}
-        <br><br>
+        {% include 'users/nav.html' %}
+
+<br><br>
 
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-  <div class="card shadow-lg " 
-       style="max-width: 500px; width: 100%; background: transparent; border-width: 2px; border-radius: 12px;">
+  <div class="card shadow-lg"
+       style="max-width: 500px; width: 100%; background: #ffffff; border-width: 2px; border-radius: 12px;">
     <div class="card-body p-4">
 
       <!-- Logo -->
       <div class="text-center mb-3">
-        <img src="{% static 'images/Ando-Tanzania-Blue-Logo_00-1 (2).svg' %}" 
+        <img src="{% static 'images/Ando-Tanzania-Blue-Logo_00-1 (2).svg' %}"
              alt="Logo" style="width: 80px; height: auto;">
       </div>
 
-      <h4 class="card-title text-center mb-4 font-weight-bold">Create Your Account</h4>
+      <h4 class="card-title text-center mb-4 fw-bold">Create Your Account</h4>
 
       <!-- Alerts -->
       {% if messages %}
         {% for message in messages %}
           <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center mt-2" role="alert">
             {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
           </div>
         {% endfor %}
       {% endif %}
@@ -53,38 +51,33 @@
       <form method="post" action="" id="registerForm">
         {% csrf_token %}
 
-        <!-- First Name -->
-        <div class="form-group">
-          <label for="first_name" class="font-weight-bold">First Name</label>
+        <div class="mb-3">
+          <label for="first_name" class="fw-bold">First Name</label>
           <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Enter your first name" required>
         </div>
 
-        <!-- Last Name -->
-        <div class="form-group">
-          <label for="last_name" class="font-weight-bold">Last Name</label>
+        <div class="mb-3">
+          <label for="last_name" class="fw-bold">Last Name</label>
           <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Enter your last name" required>
         </div>
 
-        <!-- Email -->
-        <div class="form-group">
-          <label for="email" class="font-weight-bold">Email</label>
+        <div class="mb-3">
+          <label for="email" class="fw-bold">Email</label>
           <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
         </div>
 
-        <!-- Fund Available -->
-        <div class="form-group">
-          <label for="fund_available" class="font-weight-bold">Fundi Available</label>
-          <select name="fund_available" id="fund_available" class="form-control">
+        <div class="mb-3">
+          <label for="fund_available" class="fw-bold">Fundi Available</label>
+          <select name="fund_available" id="fund_available" class="form-select">
             <option value="">Select option</option>
             <option value="No">No</option>
             <option value="Yes">Yes</option>
           </select>
         </div>
 
-        <!-- Pickup Location -->
-        <div class="form-group">
-          <label for="pickup_location" class="font-weight-bold">Pickup Location</label>
-          <select name="pickup_location" id="pickup_location" class="form-control">
+        <div class="mb-3">
+          <label for="pickup_location" class="fw-bold">Pickup Location</label>
+          <select name="pickup_location" id="pickup_location" class="form-select">
             <option value="">Select region</option>
             {% for value, label in REGION_CHOICES %}
               <option value="{{ value }}">{{ label }}</option>
@@ -92,10 +85,9 @@
           </select>
         </div>
 
-        <!-- Site Region -->
-        <div class="form-group">
-          <label for="site_region" class="font-weight-bold">Site Region</label>
-          <select name="site_region" id="site_region" class="form-control">
+        <div class="mb-3">
+          <label for="site_region" class="fw-bold">Site Region</label>
+          <select name="site_region" id="site_region" class="form-select">
             <option value="">Select region</option>
             {% for value, label in REGION_CHOICES %}
               <option value="{{ value }}">{{ label }}</option>
@@ -103,62 +95,57 @@
           </select>
         </div>
 
-        <!-- Site Location -->
-        <div class="form-group">
-          <label for="site_location" class="font-weight-bold">Site Location</label>
+        <div class="mb-3">
+          <label for="site_location" class="fw-bold">Site Location</label>
           <input type="text" name="site_location" id="site_location" class="form-control" placeholder="Enter site location">
         </div>
 
-        <!-- Contact -->
-        <div class="form-group">
-          <label for="contact" class="font-weight-bold">Phone Number</label>
+        <div class="mb-3">
+          <label for="contact" class="fw-bold">Phone Number</label>
           <input type="text" name="contact" id="contact" class="form-control" placeholder="Enter your contact">
         </div>
 
-        <!-- Password -->
-        <div class="form-group">
-          <label for="password" class="font-weight-bold">Password</label>
+        <div class="mb-3">
+          <label for="password" class="fw-bold">Password</label>
           <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required>
         </div>
 
-        <!-- Confirm Password -->
-        <div class="form-group">
-          <label for="password1" class="font-weight-bold">Confirm Password</label>
+        <div class="mb-3">
+          <label for="password1" class="fw-bold">Confirm Password</label>
           <input type="password" name="password1" id="password1" class="form-control" placeholder="Confirm password" required>
         </div>
 
-      <!-- Submit Button -->
-<!-- Submit Button -->
-<div class="d-grid mt-3">
-  <button type="submit" 
-          class="btn btn-primary btn-block" 
-          id="registerButton" 
-          style="background-color: #174376 !important; border-color: #174376 !important; color: #fff !important;">
-    <span id="btnText" style="color: #fff !important;">Create Account</span>
-    <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" style="color: #fff !important;"></span>
-  </button>
-</div>
+        <div class="d-grid mt-3">
+          <button type="submit"
+                  class="btn btn-primary"
+                  id="registerButton"
+                  style="background-color: #174376 !important; border-color: #174376 !important; color: #fff !important;">
+            <span id="btnText" style="color: #fff !important;">Create Account</span>
+            <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
 
-
-
-        <!-- Login Link -->
         <div class="text-center mt-3">
-          Already have an account? 
-          <a href="{% url 'login' %}" class="text-primary font-weight-bold">Login</a>
+          Already have an account?
+          <a href="{% url 'login' %}" class="text-primary fw-bold">Login</a>
         </div>
 
       </form>
     </div>
   </div>
 </div>
+
 <br><br><br>
 
 <script>
   setTimeout(function() {
-    $('.alert').alert('close');
+    var alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+      var alertInstance = new bootstrap.Alert(alert);
+      alertInstance.close();
+    });
   }, 3000);
 
-  // Loading effect for registration
   const form = document.getElementById('registerForm');
   const button = document.getElementById('registerButton');
   const btnText = document.getElementById('btnText');

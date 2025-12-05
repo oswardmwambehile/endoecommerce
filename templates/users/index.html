@@ -1,0 +1,112 @@
+{% extends "users/base.html" %}
+
+
+{% block content %}
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Topbar Start -->
+        {% include 'users/topnav.html' %}
+        <!-- Topbar End -->
+
+        <!-- Navbar & Hero Start -->
+        {% include 'users/nav.html' %}
+        <!-- Navbar & Hero End -->
+
+        <!-- Carousel Start -->
+         {% include 'users/cursoursel.html' %}
+        <!-- Carousel End -->
+
+       
+
+        
+
+        <!-- Our Products Start -->
+       {% include 'users/products.html' %}
+
+       {% include 'users/banner.html' %}
+        <!-- Our Products End -->
+  <footer style="background-color: #174376; color: white; padding: 50px 0;">
+
+    <div class="container">
+        <div class="row">
+
+            <!-- Column 1 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: white; font-weight: 700;">Get to Know Us</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: white; text-decoration: none;">About Us</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Our Products</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Careers</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Blog</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: #174376; font-weight: 700;">Customer Service</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: white; text-decoration: none;">Contact Us</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Shipping</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Returns</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Help Center</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: #174376; font-weight: 700;">Connect With Us</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: white; text-decoration: none;">Facebook</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Instagram</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">WhatsApp</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4 -->
+            <div class="col-md-3 col-sm-6 mb-4">
+                <h5 style="color: #174376; font-weight: 700;">Our Business</h5>
+                <ul class="list-unstyled mt-3">
+                    <li><a href="#" style="color: white; text-decoration: none;">Roofing Sheets</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Tiles</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Accessories</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Bulk Orders</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Line -->
+    <div class="text-center mt-4" style="border-top: 1px solid #e6b800; padding-top: 20px;">
+        <p style="color: white; font-size: 14px;">
+            © {{ year }} Ando Roofing Product Limited — All Rights Reserved.
+        </p>
+    </div>
+</footer>
+        <!-- Product Banner Start -->
+      
+     
+        <!-- Product Banner End -->
+
+        <!-- Product List Satrt -->
+       
+        <!-- Product List End -->
+
+       
+
+        <!-- Footer Start -->
+        
+        <!-- Footer End -->
+{% endblock %}
+
+        
+
+
+        

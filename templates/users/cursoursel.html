@@ -1,0 +1,117 @@
+{% load static %}
+
+<div class="carousel-wrapper">
+    <div class="container">
+
+        <div class="header-carousel owl-carousel custom-carousel">
+
+            <!-- Slide 1 -->
+            <div class="header-carousel-item">
+                <img src="{% static 'images/banner1.png' %}" alt="Banner 1">
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="header-carousel-item">
+                <img src="{% static 'admin/img/banner 2.png' %}" alt="Banner 2">
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="header-carousel-item">
+                <img src="{% static 'admin/img/banner 3.png' %}" alt="Banner 3">
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<style>
+.carousel-wrapper {
+    margin-top: 25px; /* space between nav and slider */
+}
+
+/* MAIN CAROUSEL SETTINGS */
+.custom-carousel {
+    width: 95%;
+    margin: 0 auto;
+ 
+}
+
+/* DESKTOP: full width & fixed height */
+.header-carousel-item {
+    height: 480px;
+}
+
+.header-carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* desktop fills fully */
+    display: block;
+}
+
+/* MOBILE: full banner visible, no cropping, text fully visible */
+@media (max-width: 767px) {
+    .header-carousel-item {
+        height: auto !important; /* let image scale naturally */
+    }
+
+    .header-carousel-item img {
+        width: 100%;
+        height: auto !important;      /* scale image proportionally */
+        object-fit: contain !important; /* show full image */
+        display: block;
+        background: none !important;   /* remove black bars */
+    }
+
+    .custom-carousel {
+        width: 100%;
+    }
+}
+
+
+
+.owl-carousel, .owl-stage-outer {
+    overflow: hidden !important;
+}
+
+/* NAV BUTTONS */
+.owl-carousel .owl-nav button {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    font-size: 30px !important;
+    color: #fff !important;
+    background: rgba(0,0,0,0.4) !important;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+}
+
+.owl-carousel .owl-nav .owl-prev { left: 10px; }
+.owl-carousel .owl-nav .owl-next { right: 10px; }
+
+.owl-carousel .owl-nav button:hover {
+    background: rgba(0,0,0,0.6) !important;
+}
+</style>
+
+<script>
+$(document).ready(function(){
+    $(".header-carousel").owlCarousel({
+        autoplay: true,
+        autoplayTimeout: 4000,   // around 4 sec delay between slides
+        smartSpeed: 450,         // FAST SLIDE (shop.mabati style)
+        loop: true,
+        margin: 0,
+        nav: true,
+        dots: true,
+        items: 1,
+        autoHeight: true,
+        autoplayHoverPause: true,
+        animateOut: false,       // ensure no fade
+        animateIn: false         // ensure no fade
+    });
+});
+</script>
+
+

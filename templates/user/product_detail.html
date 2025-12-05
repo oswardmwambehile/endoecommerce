@@ -1,4 +1,4 @@
-{% extends "admin/base.html" %}
+{% extends "users/base.html" %}
 {% load static %}
 {% load humanize %}
 
@@ -16,11 +16,12 @@
 
 
         <!-- Topbar Start -->
-        {% include 'admin/topnav.html' %}
+        {% include 'users/topnav.html' %}
         <!-- Topbar End -->
 
         <!-- Navbar & Hero Start -->
-        {% include 'admin/nav.html' %}
+        {% include 'users/nav.html' %}
+
         <!-- Navbar & Hero End -->
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -189,52 +190,35 @@ h5.mt-4 { border-left: 4px solid #ff9900; padding-left: 10px; font-weight: 600; 
 
 
 <!-- Accessories Section -->
-<div class="col-lg-12 wow fadeInUp mx-auto" style="max-width:1200px;" data-wow-delay="0.1s">
+<div class="col-12 wow fadeInUp mx-auto" style="max-width:1200px;" data-wow-delay="0.1s">
     <h3 class="mb-4" style="font-weight:700; color:#174376;">Explore More Our Products Accessories Here</h3>
-    <div class="row g-4 product">
+    <div class="row g-4">
         {% for item in accessories_products %}
-        <div class="col-lg-3 col-md-6">
-            <div class="product-item rounded wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
-                <div class="product-item-inner border rounded">
-                    <div class="product-item-inner-item position-relative">
-                        {% if item.product_image %}
-                        <img src="{{ item.product_image.url }}" class="img-fluid w-100 rounded-top" alt="{{ item.name }}">
-                        {% endif %}
-                        <div class="product-details">
-                            <a href="{% url 'product_detail' item.id %}"><i class="fa fa-eye fa-1x"></i></a>
-                        </div>
-                    </div>
-                    <div class="text-center rounded-bottom p-4">
-                        <a href="#" class="d-block mb-2">{{ item.category.name }}</a>
-                        <a href="{% url 'product_detail' item.id %}" class="d-block h5">{{ item.name|title }}</a>
-                        {% if item.discount_price %}
-                        <del class="me-2 fs-6">TZS {{ item.selling_price|intcomma }}</del>
-                        <span class="text-primary fs-6">TZS {{ item.discount_price|intcomma }}</span>
-                        {% else %}
-                        <span class="text-primary fs-6">TZS {{ item.selling_price|intcomma }}</span>
-                        {% endif %}
-                    </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="product-card text-center border rounded p-3 h-100 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                <div class="position-relative mb-3">
+                    {% if item.product_image %}
+                    <img src="{{ item.product_image.url }}" class="img-fluid rounded-top" alt="{{ item.name }}" style="max-height:200px; object-fit:contain;">
+                    {% endif %}
+                    {% if item.is_new %}
+                    <span class="position-absolute top-0 start-0 bg-warning text-dark px-2 py-1 rounded">New</span>
+                    {% endif %}
                 </div>
-                <div class="product-item-add border border-top-0 rounded-bottom text-center p-4 pt-0">
-                    <a href="{% url 'product_detail' item.id %}" class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-3">
-                        <i class="fa fa-eye fa-1x"></i> View Product
-                    </a>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex">
-                            {% for i in "12345" %}
-                                <i class="fas fa-star{% if forloop.counter > item.rating|default:5 %}-o{% endif %} text-primary"></i>
-                            {% endfor %}
-                        </div>
-                        <div class="d-flex">
-                            <a href="#" class="text-primary d-flex align-items-center justify-content-center me-3">
-                                <span class="rounded-circle btn-sm-square border"><i class="fas fa-random"></i></span>
-                            </a>
-                            <a href="#" class="text-primary d-flex align-items-center justify-content-center me-0">
-                                <span class="rounded-circle btn-sm-square border"><i class="fas fa-heart"></i></span>
-                            </a>
-                        </div>
-                    </div>
+                <h6 class="mb-1">{{ item.category.name }}</h6>
+                <h5 class="mb-2">
+                    <a href="{% url 'product_detail' item.id %}" class="text-dark text-decoration-none">{{ item.name|title }}</a>
+                </h5>
+                <div class="mb-3">
+                   
+                  
+                   
+                    
+                    <span class="text-primary fw-bold fs-6">TZS {{ item.selling_price|intcomma }}</span>
+                   
                 </div>
+                <a href="{% url 'product_detail' item.id %}" class="btn btn-warning w-100 mt-auto" style="background-color: #174376; color: white; border-color: #174376;">
+                    <i class="fas fa-eye me-2"></i> View Product
+                </a>
             </div>
         </div>
         {% empty %}
@@ -242,6 +226,24 @@ h5.mt-4 { border-left: 4px solid #ff9900; padding-left: 10px; font-weight: 600; 
         {% endfor %}
     </div>
 </div>
+
+<style>
+.product-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+.btn-warning {
+    background-color: #fdc60d;
+    border-color: #fdc60d;
+    color: #000;
+}
+</style>
+
 <br><br><br><br><br>
 
 

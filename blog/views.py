@@ -73,4 +73,4 @@ def submit_inquiry(request):
 
 
 def dashboard(request):
-    return render(request, 'admin/index.html')
+    return render(request, 'users/index.html')

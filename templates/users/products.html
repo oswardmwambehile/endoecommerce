@@ -1,0 +1,122 @@
+{% load static %}
+<div class="container py-5">
+    <h1 style="
+  font-size:32px;
+  font-weight:700;
+  text-transform:capitalize;
+  margin-bottom:20px;
+  padding-left:12px;
+  border-left:5px solid #fdc60d;
+">
+  Shop By Our Products Brands
+</h1>
+
+    <div class="row g-4">
+
+        <!-- Product 1 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="product-card text-center border rounded p-3 h-100 wow fadeInUp" data-wow-delay="0.1s">
+                <img src="{% static 'images/zebra.jfif' %}" class="img-fluid mb-3" alt="Zebra Tiles">
+                <h6 class="mb-1">Zebra Tiles</h6>
+                <h5 class="mb-2">Zebra Shingle Tiles</h5>
+                <span class="text-primary fw-bold mb-3 d-block"></span>
+                <a href="{% url 'category' 'Zebra Roofing tiles' %}" class="btn btn-warning w-100" style="background-color: #174376; color: white; border-color: white;">
+                    <i class="fas fa-shopping-cart me-2"></i> Shop Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="product-card text-center border rounded p-3 h-100 wow fadeInUp" data-wow-delay="0.3s">
+                <img src="{% static 'images/ando_long_mst1.png' %}" class="img-fluid mb-3" alt="Ando Long">
+                <h6 class="mb-1">Ando Long</h6>
+                <h5 class="mb-2">Ando Long – MST (O/P)</h5>
+                 <span class="text-primary fw-bold mb-3 d-block"></span>
+                <a href="{% url 'category' 'Ando Long' %}" class="btn btn-warning w-100" style="background-color: #174376; color: white; border-color: white;">
+                    <i class="fas fa-shopping-cart me-2"></i> Shop Now
+                </a>
+            </div>
+        </div>
+        <!-- Product 2 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="product-card text-center border rounded p-3 h-100 wow fadeInUp" data-wow-delay="0.3s">
+                <img src="{% static 'images/ando_eco_sw1.png' %}" class="img-fluid mb-3" alt="Ando Long">
+                <h6 class="mb-1">Ando Eco</h6>
+                <h5 class="mb-2">Ando Eco – SW (N/P)</h5>
+                <span class="text-primary fw-bold mb-3 d-block"></span>
+                <a href="{% url 'category' 'Ando Eco' %}" class="btn btn-warning w-100" style="background-color: #174376; color: white; border-color: white;">
+                    <i class="fas fa-shopping-cart me-2"></i> Shop Now
+                </a>
+            </div>
+        </div>
+        <!-- Product 2 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="product-card text-center border rounded p-3 h-100 wow fadeInUp" data-wow-delay="0.3s">
+                <img src="{% static 'images/ando_decor_plaster1-768x510.png' %}" class="img-fluid mb-3" alt="Ando Long">
+                <h6 class="mb-1">Ando Decorative wall coatings</h6>
+                <h5 class="mb-2">Ando Decor Plaster</h5>
+                <span class="text-primary fw-bold mb-3 d-block"></span>
+                <a href="{% url 'category' 'Ando Decorative wall coatings' %}" class="btn btn-warning w-100" style="background-color: #174376; color: white; border-color: white;">
+                    <i class="fas fa-shopping-cart me-2"></i> Shop Now
+                </a>
+            </div>
+        </div>
+        <!-- Product 2 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="product-card text-center border rounded p-3 h-100 wow fadeInUp" data-wow-delay="0.3s">
+                <img src="{% static 'images/container.webp' %}" class="img-fluid mb-3" alt="Ando Long">
+                <h6 class="mb-1">Ando mobile Steel structures</h6>
+                <h5 class="mb-2">Flat House Modular Structure</h5>
+                <span class="text-primary fw-bold mb-3 d-block"></span>
+                <a href="{% url 'category' 'Ando Mobile Steel Structures' %}" class="btn btn-warning w-100" style="background-color: #174376; color: white; border-color: white;">
+                    <i class="fas fa-shopping-cart me-2"></i> Shop Now
+                </a>
+            </div>
+        </div>
+        <!-- Product 2 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="product-card text-center border rounded p-3 h-100 wow fadeInUp" data-wow-delay="0.3s">
+                <img src="{% static 'images/pva.webp' %}" class="img-fluid mb-3" alt="Ando Long">
+                <h6 class="mb-1">Pva</h6>
+                <h5 class="mb-2">Polyvinyl Alcohol(PVA) </h5>
+                <span class="text-primary fw-bold mb-3 d-block"></span>
+                <a href="{% url 'category' 'PVA' %}" class="btn btn-warning w-100" style="background-color: #174376; color: white; border-color: white;">
+                    <i class="fas fa-shopping-cart me-2"></i> Shop Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="product-card text-center border rounded p-3 h-100 wow fadeInUp" data-wow-delay="0.5s">
+                <img src="{% static 'images/nails.jpg' %}" class="img-fluid mb-3" alt="Accessories">
+                <h6 class="mb-1">Accessories</h6>
+                <h5 class="mb-2">Fasteners / Nails / Screws</h5>
+                <span class="text-primary fw-bold mb-3 d-block"></span>
+                <a href="{% url 'category' 'Accessories' %}" class="btn btn-warning w-100" style="background-color: #174376; color: white; border-color: white;">
+                    <i class="fas fa-shopping-cart me-2"></i> Shop Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Repeat same col classes for remaining products -->
+        <!-- col-12 = full width on xs/mobile, col-sm-6 = 2 columns on small, col-md-4 = 3 columns on medium, col-lg-3 = 4 columns on large -->
+
+    </div>
+</div>
+
+<style>
+.product-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+.btn-warning {
+    background-color: #fdc60d;
+    border-color: #fdc60d;
+    color: #000;
+}
+</style>
